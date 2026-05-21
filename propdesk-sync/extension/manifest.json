@@ -1,0 +1,25 @@
+{
+  "manifest_version": 3,
+  "name": "PropDesk Sync",
+  "version": "1.0",
+  "description": "Syncs TraderPost account data to PropDesk locally",
+  "permissions": ["activeTab", "scripting", "alarms", "storage"],
+  "host_permissions": [
+    "https://app.traderspost.io/*",
+    "http://localhost:3001/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://app.traderspost.io/*"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "PropDesk Sync"
+  }
+}

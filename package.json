@@ -1,0 +1,12 @@
+{
+  "name": "propdesk",
+  "version": "1.0.0",
+  "description": "PropDesk — prop trading account dashboard",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "devDependencies": {
+    "electron": "^31.0.0"
+  }
+}

@@ -1,0 +1,13 @@
+node_modules/
+
+# Personal account data — stays local only
+propdesk-sync/server/accounts.json
+propdesk-sync/server/balance_history.json
+propdesk-sync/server/bj_trades.json
+propdesk-sync/server/acct_cfg.json
+propdesk-sync/server/payouts.json
+propdesk-sync/server/fc_entries.json
+
+# Electron build output
+dist/
+out/

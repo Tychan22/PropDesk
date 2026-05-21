@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { width: 240px; background: #111118; color: #ededf5; font-family: 'Segoe UI', sans-serif; padding: 16px; }
+.logo { display: flex; align-items: center; gap: 9px; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.08); }
+.mark { width: 26px; height: 26px; background: #7c5cfc; border-radius: 7px; text-align:center; line-height:26px; font-size: 13px; }
+.name { font-size: 13px; font-weight: 700; }
+.sub { font-size: 9px; color: #8888a8; letter-spacing: 1px; }
+.row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 12px; font-family: monospace; }
+.lbl { color: #55556a; }
+.val { font-weight: 600; }
+.g { color: #00d68f; }
+.btn { width: 100%; margin-top: 14px; padding: 9px; background: #7c5cfc; color: #fff; border: none; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; }
+</style>
+</head>
+<body>
+<div class="logo">
+  <div class="mark">⬡</div>
+  <div><div class="name">PropDesk Sync</div><div class="sub">by TradeConflux</div></div>
+</div>
+<div class="row"><span class="lbl">Accounts</span><span class="val g" id="v-count">—</span></div>
+<div class="row"><span class="lbl">Last sync</span><span class="val" id="v-time">—</span></div>
+<div class="row"><span class="lbl">Status</span><span class="val g" id="v-status">—</span></div>
+<button class="btn" id="btn" onclick="doSync()">↻ Sync Now</button>
+<script>
+// Read from chrome.storage — no network call needed
+chrome.storage.local.get('propdesk_sync', function(result) {
+  var d = result.propdesk_sync;
+  if (d) {
+    document.getElementById('v-count').textContent = d.count || '0';
+    document.getElementById('v-time').textContent = new Date(d.synced_at).toLocaleTimeString();
+    document.getElementById('v-status').textContent = 'Synced';
+  } else {
+    document.getElementById('v-status').textContent = 'Not synced yet';
+    document.getElementById('v-status').className = 'val';
+  }
+});
+
+function doSync() {
+  document.getElementById('btn').textContent = 'Syncing...';
+  chrome.runtime.sendMessage({action: 'manual_sync'}, function() {
+    setTimeout(function() {
+      document.getElementById('btn').textContent = '↻ Sync Now';
+      chrome.storage.local.get('propdesk_sync', function(result) {
+        var d = result.propdesk_sync;
+        if (d) {
+          document.getElementById('v-count').textContent = d.count || '0';
+          document.getElementById('v-time').textContent = new Date(d.synced_at).toLocaleTimeString();
+          document.getElementById('v-status').textContent = 'Synced';
+        }
+      });
+    }, 3000);
+  });
+}
+</script>
+</body>
+</html>
