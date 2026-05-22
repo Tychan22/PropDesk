@@ -1,7 +1,32 @@
-const { app, BrowserWindow, ipcMain, Menu } = require('electron');
-const { spawn } = require('child_process');
+const { app, BrowserWindow, ipcMain, Menu, dialog } = require('electron');
+const { spawn, execSync } = require('child_process');
 const path = require('path');
 const fs = require('fs');
+
+function checkForUpdates() {
+  try {
+    execSync('git fetch origin main', { cwd: __dirname, timeout: 8000, stdio: 'ignore' });
+    const behind = execSync('git rev-list HEAD...origin/main --count', { cwd: __dirname }).toString().trim();
+    if (parseInt(behind) > 0) {
+      const choice = dialog.showMessageBoxSync({
+        type: 'info',
+        title: 'PropDesk Update Available',
+        message: `A new update is available (${behind} change${behind === '1' ? '' : 's'}).`,
+        detail: 'Update now to get the latest features and fixes.',
+        buttons: ['Update & Restart', 'Skip'],
+        defaultId: 0
+      });
+      if (choice === 0) {
+        execSync('git pull origin main', { cwd: __dirname, stdio: 'ignore' });
+        execSync('npm install --prefix "' + __dirname + '"', { cwd: __dirname, stdio: 'ignore' });
+        app.relaunch();
+        app.exit(0);
+      }
+    }
+  } catch (e) {
+    // No internet or not a git repo — skip silently
+  }
+}
 
 let win;
 let serverProcess = null;
@@ -34,8 +59,9 @@ function startServer() {
   serverProcess.on('error', (err) => { console.error('[PropDesk] Server error:', err.message); serverProcess = null; });
 }
 
-app.whenReady().then(() => {
+app.whenReady().then(async () => {
   Menu.setApplicationMenu(null);
+  checkForUpdates();
   startServer();
 
   // Push accounts to renderer whenever the server writes a new sync
