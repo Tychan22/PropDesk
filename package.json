@@ -4,9 +4,46 @@
   "description": "PropDesk — prop trading account dashboard",
   "main": "main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "build": "electron-builder --publish never",
+    "release": "electron-builder --publish always"
+  },
+  "build": {
+    "appId": "com.tychan.propdesk",
+    "productName": "PropDesk",
+    "icon": "favicon.ico",
+    "publish": {
+      "provider": "github",
+      "owner": "Tychan22",
+      "repo": "PropDesk"
+    },
+    "win": {
+      "target": "portable",
+      "icon": "favicon.ico"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "propdesk.html",
+      "favicon.ico",
+      "propdesk-sync/extension/**",
+      "propdesk-sync/server/propdesk-server.js",
+      "propdesk-sync/server/PropDesk.bat",
+      "node_modules/**"
+    ],
+    "extraResources": [
+      {
+        "from": "propdesk-sync/server",
+        "to": "server",
+        "filter": ["propdesk-server.js", "PropDesk.bat"]
+      }
+    ]
+  },
+  "dependencies": {
+    "electron-updater": "^6.3.9"
   },
   "devDependencies": {
-    "electron": "^31.0.0"
+    "electron": "^31.0.0",
+    "electron-builder": "^25.1.8"
   }
 }
