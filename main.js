@@ -44,11 +44,18 @@ function pushAccountsToRenderer() {
   }
 }
 
+function killPort3001() {
+  try {
+    execSync('for /f "tokens=5" %a in (\'netstat -ano ^| findstr :3001\') do taskkill /PID %a /F', { shell: 'cmd.exe', stdio: 'ignore' });
+  } catch {}
+}
+
 function startServer() {
   if (serverProcess) {
     serverProcess.kill();
     serverProcess = null;
   }
+  killPort3001();
   const serverPath = path.join(__dirname, 'propdesk-sync', 'server', 'propdesk-server.js');
   serverProcess = spawn('node', [serverPath], {
     stdio: 'inherit',
