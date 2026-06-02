@@ -1706,10 +1706,14 @@ html,body{width:100%;height:100%;overflow:hidden;background:#09090d}
       <div>
         <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
           <span style="font-size:11px;font-family:var(--font-m);padding:3px 10px;border-radius:20px;background:var(--xdim);color:#b09aff;border:1px solid rgba(124,92,252,.25)">Latest</span>
-          <span style="font-size:13px;font-weight:600;color:var(--text)">v1.4.8</span>
+          <span style="font-size:13px;font-weight:600;color:var(--text)">v1.4.9</span>
           <span style="font-size:11px;font-family:var(--font-m);color:var(--muted)">June 2026</span>
         </div>
         <div style="display:flex;flex-direction:column;gap:7px">
+          <div style="display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--muted2);font-family:var(--font-m)">
+            <i class="ti ti-circle-check" style="color:var(--green);font-size:14px;margin-top:1px;flex-shrink:0"></i>
+            <span>Bot journal P&amp;L now uses dayPnl (actual balance change from day start) instead of accumulated snapshot deltas — journal entries will always match the correct daily P&amp;L</span>
+          </div>
           <div style="display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--muted2);font-family:var(--font-m)">
             <i class="ti ti-circle-check" style="color:var(--green);font-size:14px;margin-top:1px;flex-shrink:0"></i>
             <span>Fixed payout green day counter — logging a payout now correctly resets the counter to 0, clearing any manual override that could cause it to start at a non-zero value</span>
@@ -4853,7 +4857,8 @@ function autoLogPnlEvents(pnlEvents){
     // Merge into existing same-day same-account entry if one exists
     const existing=bjTrades.find(t=>t.date===e.date&&t.firm===e.firm&&t.acctName===e.acctName);
     if(existing){
-      existing.pnl=Math.round((existing.pnl+e.pnl)*100)/100;
+      // Use dayPnl (absolute balance change from day start) if available — more accurate than accumulating deltas
+      existing.pnl=e.dayPnl!=null?Math.round(e.dayPnl*100)/100:Math.round((existing.pnl+e.pnl)*100)/100;
       existing.time=e.time;
       existing.notes=existing.acctName+' '+(existing.pnl>=0?'+':'')+existing.pnl.toFixed(2);
     } else {
