@@ -1,12 +1,12 @@
 {
   "name": "propdesk",
-  "version": "1.0.0",
+  "version": "1.4.8",
   "description": "PropDesk — prop trading account dashboard",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
     "build": "electron-builder --publish never",
-    "release": "electron-builder --publish always"
+    "release": "node scripts/release.js"
   },
   "build": {
     "appId": "com.tychan.propdesk",
@@ -18,8 +18,14 @@
       "repo": "PropDesk"
     },
     "win": {
-      "target": "portable",
+      "target": "nsis",
       "icon": "favicon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
     },
     "files": [
       "main.js",

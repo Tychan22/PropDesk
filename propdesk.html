@@ -1706,10 +1706,14 @@ html,body{width:100%;height:100%;overflow:hidden;background:#09090d}
       <div>
         <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
           <span style="font-size:11px;font-family:var(--font-m);padding:3px 10px;border-radius:20px;background:var(--xdim);color:#b09aff;border:1px solid rgba(124,92,252,.25)">Latest</span>
-          <span style="font-size:13px;font-weight:600;color:var(--text)">v1.4.7</span>
-          <span style="font-size:11px;font-family:var(--font-m);color:var(--muted)">May 2026</span>
+          <span style="font-size:13px;font-weight:600;color:var(--text)">v1.4.8</span>
+          <span style="font-size:11px;font-family:var(--font-m);color:var(--muted)">June 2026</span>
         </div>
         <div style="display:flex;flex-direction:column;gap:7px">
+          <div style="display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--muted2);font-family:var(--font-m)">
+            <i class="ti ti-circle-check" style="color:var(--green);font-size:14px;margin-top:1px;flex-shrink:0"></i>
+            <span>Fixed payout green day counter — logging a payout now correctly resets the counter to 0, clearing any manual override that could cause it to start at a non-zero value</span>
+          </div>
           <div style="display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--muted2);font-family:var(--font-m)">
             <i class="ti ti-circle-check" style="color:var(--green);font-size:14px;margin-top:1px;flex-shrink:0"></i>
             <span>Trading day boundary is now 6 PM ET everywhere — bot journal calendar, recent activity, and today&apos;s trade count all treat post-6PM trades as the next day, matching how prop firm day P&amp;L already worked</span>
