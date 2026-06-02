@@ -31,7 +31,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#09090d}
 /* SIDEBAR */
 .sb{width:var(--sb);flex-shrink:0;background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;padding:28px 0;position:relative;transition:width .2s}
 .sb-logo{padding:0 26px 32px;display:flex;align-items:center;gap:12px}
-.sb-mark{width:36px;height:36px;background:var(--accent);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sb-mark{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .sb-mark svg{width:18px;height:18px;fill:#fff}
 .sb-name{font-size:17px;font-weight:700;letter-spacing:-0.4px}
 .sb-sub{font-size:9px;color:var(--muted2);font-family:var(--font-m);letter-spacing:1.2px;margin-top:2px}
@@ -58,6 +58,22 @@ html,body{width:100%;height:100%;overflow:hidden;background:#09090d}
 .dot{width:7px;height:7px;border-radius:50%;background:var(--green);animation:pulse 2s infinite;flex-shrink:0}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
 @keyframes spin{to{transform:rotate(360deg)}}
+@keyframes bjShoot1{0%{transform:translate(0,0);opacity:0}5%{opacity:1}100%{transform:translate(400px,200px);opacity:0}}
+@keyframes bjShoot2{0%{transform:translate(0,0);opacity:0}5%{opacity:1}100%{transform:translate(350px,180px);opacity:0}}
+@keyframes bjShoot3{0%{transform:translate(0,0);opacity:0}5%{opacity:1}100%{transform:translate(300px,150px);opacity:0}}
+@keyframes bjShoot4{0%{transform:translate(0,0);opacity:0}5%{opacity:1}100%{transform:translate(420px,210px);opacity:0}}
+@keyframes bjGlimmer{0%,100%{opacity:.2}50%{opacity:1}}
+.bj-s1{animation:bjShoot1 3.5s ease-in infinite}
+.bj-s2{animation:bjShoot2 4.2s ease-in infinite;animation-delay:1.4s}
+.bj-s3{animation:bjShoot3 3.8s ease-in infinite;animation-delay:2.6s}
+.bj-s4{animation:bjShoot4 4.8s ease-in infinite;animation-delay:0.8s}
+.bj-s5{animation:bjShoot1 5s ease-in infinite;animation-delay:3.2s}
+.bj-s6{animation:bjShoot2 3.2s ease-in infinite;animation-delay:2s}
+.bj-g1{animation:bjGlimmer 3.2s ease-in-out infinite}
+.bj-g2{animation:bjGlimmer 4.7s ease-in-out infinite;animation-delay:.8s}
+.bj-g3{animation:bjGlimmer 2.8s ease-in-out infinite;animation-delay:1.5s}
+.bj-g4{animation:bjGlimmer 5.1s ease-in-out infinite;animation-delay:.3s}
+.bj-g5{animation:bjGlimmer 3.8s ease-in-out infinite;animation-delay:2.1s}
 
 /* MAIN */
 .main{flex:1;display:flex;flex-direction:column;min-width:0;overflow:hidden}
@@ -373,6 +389,9 @@ html,body{width:100%;height:100%;overflow:hidden;background:#09090d}
   .card.type-funded::after{background:#ff69b4!important}
   .card.type-eval{border-color:var(--border)!important}
   .card.type-eval::after{background:var(--amber)!important}
+  .card.type-direct{border-color:rgba(99,179,237,0.4)!important;background:rgba(99,179,237,0.04)!important}
+  .card.type-direct::after{background:#63b3ed!important}
+  .td{background:rgba(99,179,237,0.12);color:#63b3ed;border:1px solid rgba(99,179,237,0.3);border-radius:20px;font-size:10px;font-family:var(--font-m);padding:3px 10px}
 
 
   .firm-logo{width:22px;height:22px;border-radius:5px;object-fit:contain;background:var(--bg4);flex-shrink:0}
@@ -520,7 +539,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#09090d}
     <button class="sb-toggle" onclick="toggleSidebar()" title="Toggle sidebar"><i class="ti ti-chevron-left"></i></button>
     <div class="sb-logo">
       <div class="sb-mark">
-        <svg viewBox="0 0 16 16"><path d="M8 1L15 5V11L8 15L1 11V5L8 1Z"/></svg>
+        <img src="favicon.ico" style="width:36px;height:36px;object-fit:contain;border-radius:8px">
       </div>
       <div>
         <div class="sb-name">PropDesk</div>
@@ -533,20 +552,11 @@ html,body{width:100%;height:100%;overflow:hidden;background:#09090d}
       <div class="ni on" onclick="go('dashboard',this)">
         <i class="ti ti-layout-dashboard nic"></i><span class="ni-text">Dashboard</span>
       </div>
-    </div>
-    <div class="sb-sec">
-      <div class="sb-lbl">Accounts</div>
       <div class="ni" onclick="go('accounts',this)">
         <i class="ti ti-building-bank nic"></i><span class="ni-text">Prop Accounts</span>
       </div>
-    </div>
-    <div class="sb-sec">
-      <div class="sb-lbl">Bot</div>
       <div class="ni" onclick="go('journal',this)">
         <i class="ti ti-notebook nic"></i><span class="ni-text">Bot Journal</span>
-      </div>
-      <div class="ni" onclick="go('strategies',this)">
-        <i class="ti ti-sitemap nic"></i><span class="ni-text">Bot Strategies</span>
       </div>
       <div class="ni" onclick="go('stratmap',this)">
         <i class="ti ti-tournament nic"></i><span class="ni-text">Strategy Map</span>
@@ -588,8 +598,8 @@ html,body{width:100%;height:100%;overflow:hidden;background:#09090d}
       <div class="pg-title" id="pg-title">Dashboard</div>
       <div class="tb-r">
         <div class="clock" id="clock">--:--:--</div>
-        <button class="btn btn-g" onclick="openChangelog()" style="padding:7px 12px" title="What's New">
-          <i class="ti ti-star" style="font-size:15px"></i>
+        <button class="btn btn-g" onclick="openChangelog()" style="padding:7px 12px" title="What's New" onmouseenter="this.querySelector('i').style.color='#f0a500'" onmouseleave="this.querySelector('i').style.color=''">
+          <i class="ti ti-star-filled" style="font-size:15px;transition:color .15s"></i>
         </button>
         <button class="btn btn-g" onclick="openSettings()" style="display:flex;align-items:center;gap:7px">
           <i class="ti ti-settings" style="font-size:15px"></i> Settings
@@ -610,7 +620,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#09090d}
             </div>
             <div class="stat">
               <div class="sl">Active Accounts</div>
-              <div class="sv cb" id="stat-accts">—</div>
+              <div class="sv" id="stat-accts" style="color:var(--accent)">—</div>
               <div class="ss" id="stat-accts-sub">— funded · — eval</div>
             </div>
             <div class="stat" style="display:flex;flex-direction:column;justify-content:space-between">
@@ -654,8 +664,9 @@ html,body{width:100%;height:100%;overflow:hidden;background:#09090d}
         <div class="page" id="page-accounts">
           <div class="sh">
             <div class="sh-t">All Accounts <span class="badge" id="accts-badge">—</span></div>
-            <div class="filters" id="prop-filter-row">
-              <button class="fb on" onclick="setAcctFilter('all',this)">All</button>
+            <div class="filters" id="prop-filter-row" style="align-items:center">
+              <span style="font-size:10px;font-family:var(--font-m);color:var(--muted);letter-spacing:.8px;margin-right:2px">FILTER:</span>
+              <button class="fb on" id="prop-filter-all" onclick="setAcctFilter('all',this)">All</button>
             </div>
           </div>
           <!-- Cards injected here by renderLiveAccounts() -->
@@ -792,7 +803,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#09090d}
               <div class="sc-bar"></div>
               <div class="sc-body">
                 <div class="sc-hdr">
-                  <div><div class="sc-name">Pure Hunt</div><div class="sc-sub">Hunter Partial 0.7R/50% · MWF</div></div>
+                  <div><div class="sc-name">Pure Hunt</div><div class="sc-sub">Hunter Partial 0.7R/50% · MWTF</div></div>
                   <div class="sc-rk rk-ph">#1 of 9</div>
                 </div>
                 <div class="sc-profit">$32,809</div>
@@ -857,6 +868,19 @@ html,body{width:100%;height:100%;overflow:hidden;background:#09090d}
                 <div class="ml-item"><div class="ml-dot" style="background:#00d68f"></div>Safe Flow</div>
                 <div class="ml-item"><div class="ml-dot" style="background:#7c5cfc"></div>Akimbo</div>
                 <div class="ml-item"><div class="ml-dot" style="background:#f0a500"></div>Pure Hunt</div>
+              </div>
+              <!-- Daily risk inline editor -->
+              <div id="dr-popup" style="display:none;position:absolute;z-index:30;background:var(--bg2);border:1px solid var(--border3);border-radius:12px;padding:14px 16px;width:200px;box-shadow:0 8px 32px rgba(0,0,0,.5)">
+                <div id="dr-label" style="font-size:11px;font-family:var(--font-m);color:var(--muted);margin-bottom:8px">Daily Risk</div>
+                <div style="display:flex;gap:6px;align-items:center">
+                  <span style="font-size:14px;color:var(--muted2);font-weight:600">$</span>
+                  <input id="dr-input" type="number" min="0" placeholder="500" style="flex:1;background:var(--bg3);border:1px solid var(--border2);border-radius:7px;padding:6px 8px;font-size:13px;font-weight:600;color:var(--text);font-family:var(--font-m);outline:none;width:0">
+                </div>
+                <div style="display:flex;gap:6px;margin-top:10px">
+                  <button id="dr-save" style="flex:1;padding:6px;border-radius:7px;border:none;background:var(--accent);color:#000;font-size:11px;font-weight:700;font-family:var(--font-m);cursor:pointer">Save</button>
+                  <button id="dr-clear" style="padding:6px 10px;border-radius:7px;border:1px solid var(--border2);background:none;color:var(--muted2);font-size:11px;font-family:var(--font-m);cursor:pointer">Clear</button>
+                  <button id="dr-cancel" style="padding:6px 10px;border-radius:7px;border:1px solid var(--border2);background:none;color:var(--muted2);font-size:11px;font-family:var(--font-m);cursor:pointer">✕</button>
+                </div>
               </div>
             </div>
           </div>
@@ -945,6 +969,8 @@ html,body{width:100%;height:100%;overflow:hidden;background:#09090d}
                     <option value="APEX">Apex</option>
                     <option value="MFF">My Funded Futures</option>
                     <option value="ALPHA">Alpha Capital</option>
+                    <option value="FUNDEDNEXT">FundedNext</option>
+                  <option value="BULENOX">Bulenox</option>
                   </select>
                 </div>
                 <div class="sm-field">
@@ -1248,6 +1274,57 @@ html,body{width:100%;height:100%;overflow:hidden;background:#09090d}
               </div>
             </div>
 
+            <!-- Per Account Estimate -->
+            <div class="sim-card" id="pnl-per-acct-wrap" style="display:none;border-color:var(--border2)">
+              <div class="sim-section-lbl" style="margin-bottom:16px">Per Account Estimate</div>
+              <div class="results-grid" style="grid-template-columns:repeat(4,minmax(0,1fr))">
+                <div class="result-card">
+                  <div class="result-val cg" id="pnl-per-acct-wins">—</div>
+                  <div class="result-lbl">Gross wins/acct</div>
+                </div>
+                <div class="result-card">
+                  <div class="result-val cr" id="pnl-per-acct-losses">—</div>
+                  <div class="result-lbl">Loss exposure/acct</div>
+                </div>
+                <div class="result-card">
+                  <div class="result-val cg" id="pnl-per-acct-keep">—</div>
+                  <div class="result-lbl">You keep/acct</div>
+                </div>
+                <div class="result-card highlight">
+                  <div class="result-val" id="pnl-per-acct-net">—</div>
+                  <div class="result-lbl">Net/acct (after costs)</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Monte Carlo Calendar -->
+            <div class="sim-card" id="pnl-mc-cal-wrap" style="display:none;border-color:var(--border2)">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+                <div class="sim-section-lbl" style="margin-bottom:0">Simulated Month — 1 Account</div>
+                <span style="font-size:10px;font-family:var(--font-m);color:var(--muted)" id="pnl-mc-cal-strat"></span>
+              </div>
+              <div style="font-size:11px;font-family:var(--font-m);color:var(--muted);margin-bottom:14px">For best accuracy, use a single strategy. Updates on every re-run.</div>
+              <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:10px" id="pnl-mc-cal-header">
+                <div style="font-size:9px;font-family:var(--font-m);color:var(--muted);text-align:center;letter-spacing:1px">MON</div>
+                <div style="font-size:9px;font-family:var(--font-m);color:var(--muted);text-align:center;letter-spacing:1px">TUE</div>
+                <div style="font-size:9px;font-family:var(--font-m);color:var(--muted);text-align:center;letter-spacing:1px">WED</div>
+                <div style="font-size:9px;font-family:var(--font-m);color:var(--muted);text-align:center;letter-spacing:1px">THU</div>
+                <div style="font-size:9px;font-family:var(--font-m);color:var(--muted);text-align:center;letter-spacing:1px">FRI</div>
+              </div>
+              <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:6px" id="pnl-mc-cal-grid"></div>
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px;padding-top:12px;border-top:1px solid var(--border)">
+                <div style="display:flex;gap:14px;font-size:11px;font-family:var(--font-m)">
+                  <span style="color:var(--green)">■ Win</span>
+                  <span style="color:var(--red)">■ Loss</span>
+                  <span style="color:var(--muted)">■ No trade</span>
+                </div>
+                <div style="display:flex;align-items:center;gap:14px">
+                  <div style="font-size:12px;font-family:var(--font-m);color:var(--muted2)">Net: <span id="pnl-mc-cal-net" style="font-weight:600"></span></div>
+                  <button onclick="rerunPnlMcCal()" style="padding:5px 12px;background:var(--bg3);border:1px solid var(--border2);color:var(--muted2);border-radius:7px;cursor:pointer;font-family:var(--font-m);font-size:11px;transition:all .13s" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--muted2)'">↻ Re-run</button>
+                </div>
+              </div>
+            </div>
+
             <!-- What if you scaled -->
             <div class="sim-card">
               <div class="sim-section-lbl" style="margin-bottom:4px">What if you scaled?</div>
@@ -1323,6 +1400,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#09090d}
                   <option value="APEX">Apex</option>
                   <option value="MFF">My Funded Futures</option>
                   <option value="ALPHA">Alpha Capital</option>
+                  <option value="FUNDEDNEXT">FundedNext</option>
                 </select>
               </div>
               <div class="apo-field">
@@ -1442,9 +1520,10 @@ html,body{width:100%;height:100%;overflow:hidden;background:#09090d}
     <div class="acct-modal-body">
       <div class="acct-modal-field">
         <div class="acct-modal-lbl">Account Type</div>
-        <select class="acct-modal-select" id="acct-modal-type">
+        <select class="acct-modal-select" id="acct-modal-type" onchange="updateModalTypeFields(this.value)">
           <option value="eval">Eval</option>
           <option value="funded">Funded</option>
+          <option value="direct">Direct Funded</option>
         </select>
       </div>
       <div class="acct-modal-field">
@@ -1455,6 +1534,23 @@ html,body{width:100%;height:100%;overflow:hidden;background:#09090d}
           <option value="sf">Safe Flow</option>
           <option value="ak">Akimbo</option>
         </select>
+      </div>
+      <div class="acct-modal-field" id="acct-modal-consistency-field" style="grid-column:span 2;display:none">
+        <div class="acct-modal-lbl">Consistency Threshold (%)</div>
+        <input type="number" class="acct-modal-select" id="acct-modal-consistency" min="10" max="50" value="20" style="width:100%">
+        <span style="font-size:11px;font-family:var(--font-m);color:var(--muted)">Max % any single day can be of total cycle profit &mdash; Lucid Direct: 20%, Tradeify Lightning: 20% / 25% / 30%</span>
+      </div>
+      <div class="acct-modal-field" style="grid-column:span 2">
+        <div class="acct-modal-lbl">MLL Status</div>
+        <label style="display:flex;align-items:center;gap:10px;cursor:pointer;background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:10px 12px">
+          <input type="checkbox" id="acct-modal-mll-locked" style="width:15px;height:15px;accent-color:var(--accent);cursor:pointer">
+          <span style="font-size:12px;font-family:var(--font-m);color:var(--muted2)">MLL locked at starting balance <span style="color:var(--muted)">(check if payout already received)</span></span>
+        </label>
+      </div>
+      <div class="acct-modal-field" style="grid-column:span 2">
+        <div class="acct-modal-lbl">Correct Peak Balance</div>
+        <input type="number" class="acct-modal-select" id="acct-modal-peak" placeholder="Leave blank to keep current" step="0.01" style="width:100%">
+        <span style="font-size:11px;font-family:var(--font-m);color:var(--muted)">Only set this if PropDesk missed your actual highest balance &mdash; used to calculate trailing drawdown room correctly</span>
       </div>
     </div>
     <div class="acct-modal-footer">
@@ -1496,6 +1592,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#09090d}
 
     </div>
     <div class="sm-footer">
+      <span id="sm-version" style="font-size:11px;font-family:var(--font-m);color:var(--muted)"></span>
       <button class="sm-btn cancel" onclick="closeSettings(null)">Cancel</button>
       <button class="sm-btn save" onclick="saveSettings()">Save</button>
     </div>
@@ -1505,44 +1602,94 @@ html,body{width:100%;height:100%;overflow:hidden;background:#09090d}
 
 <!-- Bot Journal Day Detail Modal -->
 <div class="settings-overlay" id="bj-day-overlay" onclick="closeBjDay()">
-  <div onclick="event.stopPropagation()" style="background:var(--bg2);border:1px solid var(--border);border-radius:20px;width:560px;max-height:88vh;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 24px 80px rgba(0,0,0,.6);font-family:var(--font-h)">
-    <div style="padding:24px 28px 20px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:flex-start">
+  <div onclick="event.stopPropagation()" style="width:540px;max-height:88vh;background:#0e1628;border:1px solid rgba(0,212,160,0.15);border-radius:20px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 24px 80px rgba(0,0,0,.7);font-family:var(--font-h);position:relative">
+
+    <!-- Shooting stars -->
+    <svg style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0" viewBox="0 0 540 700" preserveAspectRatio="xMidYMid slice">
+      <g class="bj-g1"><circle cx="60" cy="80" r="1.5" fill="white"/><line x1="56" y1="80" x2="64" y2="80" stroke="white" stroke-width=".8" opacity=".7"/><line x1="60" y1="76" x2="60" y2="84" stroke="white" stroke-width=".8" opacity=".7"/></g>
+      <g class="bj-g3"><circle cx="490" cy="120" r="1.5" fill="#aaffee" opacity=".9"/></g>
+      <g class="bj-g2"><circle cx="460" cy="60" r="1" fill="white" opacity=".8"/><line x1="456" y1="60" x2="464" y2="60" stroke="white" stroke-width=".7"/><line x1="460" y1="56" x2="460" y2="64" stroke="white" stroke-width=".7"/></g>
+      <g class="bj-g4"><circle cx="30" cy="350" r="1.5" fill="#ccffee" opacity=".7"/></g>
+      <g class="bj-g5"><circle cx="510" cy="400" r="1" fill="white" opacity=".6"/><line x1="506" y1="400" x2="514" y2="400" stroke="white" stroke-width=".7"/><line x1="510" y1="396" x2="510" y2="404" stroke="white" stroke-width=".7"/></g>
+      <g class="bj-g1"><circle cx="100" cy="580" r="1.5" fill="#aaffdd" opacity=".6"/></g>
+      <g class="bj-g3"><circle cx="500" cy="580" r="1" fill="white" opacity=".5"/></g>
+      <g class="bj-g2"><circle cx="270" cy="40" r="1" fill="white" opacity=".7"/></g>
+      <g class="bj-s1" style="transform-origin:20px 40px"><line x1="20" y1="40" x2="55" y2="53" stroke="white" stroke-width="1.5" stroke-linecap="round" opacity=".9"/><line x1="20" y1="40" x2="0" y2="33" stroke="white" stroke-width=".5" stroke-linecap="round" opacity=".3"/></g>
+      <g class="bj-s2" style="transform-origin:460px 80px"><line x1="460" y1="80" x2="495" y2="93" stroke="#aaffee" stroke-width="1.5" stroke-linecap="round" opacity=".85"/><line x1="460" y1="80" x2="440" y2="72" stroke="#aaffee" stroke-width=".5" stroke-linecap="round" opacity=".3"/></g>
+      <g class="bj-s3" style="transform-origin:100px 200px"><line x1="100" y1="200" x2="133" y2="212" stroke="white" stroke-width="1.2" stroke-linecap="round" opacity=".8"/><line x1="100" y1="200" x2="82" y2="193" stroke="white" stroke-width=".4" stroke-linecap="round" opacity=".25"/></g>
+      <g class="bj-s4" style="transform-origin:390px 30px"><line x1="390" y1="30" x2="425" y2="43" stroke="#ccffff" stroke-width="1.5" stroke-linecap="round" opacity=".9"/><line x1="390" y1="30" x2="370" y2="22" stroke="#ccffff" stroke-width=".5" stroke-linecap="round" opacity=".3"/></g>
+      <g class="bj-s5" style="transform-origin:50px 500px"><line x1="50" y1="500" x2="83" y2="513" stroke="white" stroke-width="1" stroke-linecap="round" opacity=".7"/><line x1="50" y1="500" x2="32" y2="492" stroke="white" stroke-width=".4" stroke-linecap="round" opacity=".2"/></g>
+      <g class="bj-s6" style="transform-origin:290px 620px"><line x1="290" y1="620" x2="323" y2="633" stroke="#aaffee" stroke-width="1.2" stroke-linecap="round" opacity=".75"/><line x1="290" y1="620" x2="272" y2="612" stroke="#aaffee" stroke-width=".4" stroke-linecap="round" opacity=".2"/></g>
+    </svg>
+
+    <!-- Globe watermark -->
+    <div style="position:absolute;top:-60px;left:-60px;width:320px;height:320px;opacity:0.07;pointer-events:none;z-index:0">
+      <svg viewBox="0 0 680 680" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
+        <defs>
+          <radialGradient id="bj-pg" cx="38%" cy="32%" r="70%">
+            <stop offset="0%" stop-color="#00ffcc"/>
+            <stop offset="40%" stop-color="#00d4a0"/>
+            <stop offset="75%" stop-color="#008f6e"/>
+            <stop offset="100%" stop-color="#001e30"/>
+          </radialGradient>
+          <clipPath id="bj-pcp"><circle cx="340" cy="340" r="200"/></clipPath>
+        </defs>
+        <circle cx="340" cy="340" r="200" fill="url(#bj-pg)"/>
+        <g clip-path="url(#bj-pcp)">
+          <path d="M140,218 Q225,192 318,210 Q388,223 442,200 Q478,188 540,205" fill="none" stroke="#00ffcc" stroke-width="5" stroke-linecap="round"/>
+          <path d="M140,270 Q228,245 320,262 Q390,274 444,252 Q480,240 540,255" fill="none" stroke="#00d4a0" stroke-width="4" stroke-linecap="round"/>
+          <path d="M140,322 Q230,298 322,314 Q392,326 446,304 Q482,290 540,306" fill="none" stroke="#00ffcc" stroke-width="5" stroke-linecap="round"/>
+          <path d="M140,374 Q232,352 324,368 Q394,380 448,358 Q484,344 540,360" fill="none" stroke="#00d4a0" stroke-width="4" stroke-linecap="round"/>
+          <path d="M140,426 Q234,406 326,422 Q396,432 450,410 Q486,396 540,412" fill="none" stroke="#00ffcc" stroke-width="3" stroke-linecap="round"/>
+        </g>
+        <circle cx="340" cy="340" r="200" fill="none" stroke="#00ffcc" stroke-width="3"/>
+        <ellipse cx="340" cy="340" rx="290" ry="80" fill="none" stroke="#00d4a0" stroke-width="3" transform="rotate(-10 340 340)" stroke-dasharray="320 620"/>
+      </svg>
+    </div>
+
+    <!-- Header -->
+    <div style="padding:24px 28px 20px;border-bottom:1px solid rgba(0,212,160,0.12);display:flex;justify-content:space-between;align-items:flex-start;position:relative;z-index:1">
       <div>
-        <div style="font-size:10px;font-family:var(--font-m);letter-spacing:2px;color:var(--muted);margin-bottom:6px">DAILY JOURNAL SNAPSHOT</div>
-        <div id="bj-day-date" style="font-size:22px;font-weight:700;color:var(--text);line-height:1.2"></div>
-        <div id="bj-day-sub" style="font-size:12px;font-family:var(--font-m);color:var(--muted);margin-top:4px"></div>
+        <div style="font-size:10px;font-family:var(--font-m);letter-spacing:2px;color:rgba(0,212,160,0.5);margin-bottom:6px;font-weight:500">DAILY JOURNAL SNAPSHOT</div>
+        <div id="bj-day-date" style="font-size:20px;font-weight:700;color:#fff;line-height:1.2"></div>
+        <div id="bj-day-sub" style="font-size:11px;font-family:var(--font-m);color:rgba(255,255,255,0.3);margin-top:5px"></div>
       </div>
       <div style="text-align:right">
-        <div style="font-size:10px;font-family:var(--font-m);letter-spacing:1.5px;color:var(--muted);margin-bottom:4px">NET P&L</div>
-        <div id="bj-day-total" style="font-size:32px;font-weight:800;letter-spacing:-1px;line-height:1"></div>
+        <div style="font-size:10px;font-family:var(--font-m);letter-spacing:1.5px;color:rgba(0,212,160,0.5);margin-bottom:4px">NET P&L</div>
+        <div id="bj-day-total" style="font-size:30px;font-weight:800;letter-spacing:-1px;line-height:1"></div>
       </div>
     </div>
+
     <!-- Tabs -->
-    <div style="display:flex;gap:0;border-bottom:1px solid var(--border)">
-      <button id="bj-tab-accts" onclick="bjSetTab('accts')" style="flex:1;padding:12px;background:none;border:none;border-bottom:2px solid var(--accent);color:#fff;font-size:12px;font-family:var(--font-m);cursor:pointer;letter-spacing:.5px">Certificate</button>
-      <button id="bj-tab-chart" onclick="bjSetTab('chart')" style="flex:1;padding:12px;background:none;border:none;border-bottom:2px solid transparent;color:rgba(255,255,255,.35);font-size:12px;font-family:var(--font-m);cursor:pointer;letter-spacing:.5px">Cumulative P&L</button>
+    <div style="display:flex;border-bottom:1px solid rgba(0,212,160,0.1);position:relative;z-index:1">
+      <button id="bj-tab-accts" onclick="bjSetTab('accts')" style="flex:1;padding:11px;background:none;border:none;border-bottom:2px solid #00d4a0;color:#fff;font-size:12px;font-family:var(--font-m);cursor:pointer;letter-spacing:.5px">Certificate</button>
+      <button id="bj-tab-chart" onclick="bjSetTab('chart')" style="flex:1;padding:11px;background:none;border:none;border-bottom:2px solid transparent;color:rgba(255,255,255,0.3);font-size:12px;font-family:var(--font-m);cursor:pointer;letter-spacing:.5px">Cumulative P&L</button>
     </div>
 
     <!-- Accounts tab -->
-    <div id="bj-pane-accts" style="padding:20px 28px;overflow-y:auto;flex:1;scrollbar-width:thin;scrollbar-color:var(--border2) transparent">
+    <div id="bj-pane-accts" style="padding:18px 24px;overflow-y:auto;flex:1;scrollbar-width:thin;scrollbar-color:rgba(0,212,160,0.2) transparent;position:relative;z-index:1">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
-        <div style="font-size:13px;font-weight:600;color:var(--text)">Accounts</div>
-        <div id="bj-day-acct-count" style="font-size:11px;font-family:var(--font-m);color:var(--muted);background:var(--bg3);padding:3px 10px;border-radius:20px"></div>
+        <div style="font-size:13px;font-weight:600;color:#fff">Accounts</div>
+        <div id="bj-day-acct-count" style="font-size:11px;font-family:var(--font-m);color:rgba(255,255,255,0.3);background:rgba(255,255,255,0.06);padding:3px 10px;border-radius:20px;border:1px solid rgba(255,255,255,0.08)"></div>
       </div>
-      <div id="bj-day-rows" style="display:flex;flex-direction:column;gap:6px"></div>
+      <div id="bj-day-rows" style="display:flex;flex-direction:column;gap:8px"></div>
     </div>
 
     <!-- Chart tab -->
-    <div id="bj-pane-chart" style="padding:20px 28px;display:none;flex:1">
+    <div id="bj-pane-chart" style="padding:20px 28px;display:none;flex:1;position:relative;z-index:1">
       <canvas id="bj-day-chart" style="width:100%;height:220px"></canvas>
     </div>
 
-    <div id="bj-day-footer" style="padding:14px 28px 20px;border-top:1px solid var(--border);display:flex;gap:16px;align-items:center"></div>
+    <div id="bj-day-footer" style="padding:14px 24px 18px;border-top:1px solid rgba(0,212,160,0.1);display:flex;gap:14px;align-items:center;position:relative;z-index:1"></div>
   </div>
 </div>
 
 
 <!-- Changelog Modal -->
+<div class="settings-overlay" id="sim-detail-overlay" onclick="closeSimDetail()">
+  <div id="sim-detail-box" onclick="event.stopPropagation()" style="background:var(--bg2);border:1px solid var(--border);border-radius:20px;width:520px;max-height:82vh;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 24px 80px rgba(0,0,0,.6)"></div>
+</div>
+
 <div class="settings-overlay" id="changelog-overlay" onclick="closeChangelog()">
   <div onclick="event.stopPropagation()" style="background:var(--bg2);border:1px solid var(--border);border-radius:20px;width:480px;max-height:80vh;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 24px 80px rgba(0,0,0,.6)">
     <div style="padding:22px 26px 18px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center">
@@ -1559,6 +1706,330 @@ html,body{width:100%;height:100%;overflow:hidden;background:#09090d}
       <div>
         <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
           <span style="font-size:11px;font-family:var(--font-m);padding:3px 10px;border-radius:20px;background:var(--xdim);color:#b09aff;border:1px solid rgba(124,92,252,.25)">Latest</span>
+          <span style="font-size:13px;font-weight:600;color:var(--text)">v1.4.7</span>
+          <span style="font-size:11px;font-family:var(--font-m);color:var(--muted)">May 2026</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:7px">
+          <div style="display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--muted2);font-family:var(--font-m)">
+            <i class="ti ti-circle-check" style="color:var(--green);font-size:14px;margin-top:1px;flex-shrink:0"></i>
+            <span>Trading day boundary is now 6 PM ET everywhere — bot journal calendar, recent activity, and today&apos;s trade count all treat post-6PM trades as the next day, matching how prop firm day P&amp;L already worked</span>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--muted2);font-family:var(--font-m)">
+            <i class="ti ti-circle-check" style="color:var(--green);font-size:14px;margin-top:1px;flex-shrink:0"></i>
+            <span>Direct Funded profit target bar now uses actual account P&amp;L (allTimePnl) instead of bot journal sum — shows the real balance change toward the target, not just logged trades</span>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--muted2);font-family:var(--font-m)">
+            <i class="ti ti-circle-check" style="color:var(--green);font-size:14px;margin-top:1px;flex-shrink:0"></i>
+            <span>Direct Funded payout eligibility now requires BOTH the profit target AND consistency rule to be met — previously only checked consistency</span>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--muted2);font-family:var(--font-m)">
+            <i class="ti ti-circle-check" style="color:var(--green);font-size:14px;margin-top:1px;flex-shrink:0"></i>
+            <span>Direct Funded cards now show two progress bars — profit target progress and consistency — so you can see exactly which condition is still outstanding</span>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--muted2);font-family:var(--font-m)">
+            <i class="ti ti-circle-check" style="color:var(--green);font-size:14px;margin-top:1px;flex-shrink:0"></i>
+            <span>Added &quot;Correct Peak Balance&quot; field in account config modal — if PropDesk missed your actual highest balance (e.g. account was higher before the app was installed), enter the real peak so trailing drawdown room calculates correctly</span>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--muted2);font-family:var(--font-m)">
+            <i class="ti ti-circle-check" style="color:var(--green);font-size:14px;margin-top:1px;flex-shrink:0"></i>
+            <span>Fixed Topstep balance showing ~$25K instead of ~$50K — when TraderPost displays profit-only (e.g. &quot;$1,333&quot;), the server now uses the historically stored peak balance to detect account size correctly instead of guessing from the small profit number</span>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--muted2);font-family:var(--font-m)">
+            <i class="ti ti-circle-check" style="color:var(--green);font-size:14px;margin-top:1px;flex-shrink:0"></i>
+            <span>Green day minimum now varies by firm and account size — Lucid 50K requires $150/day, 100K requires $200/day, 150K requires $250/day</span>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--muted2);font-family:var(--font-m)">
+            <i class="ti ti-circle-check" style="color:var(--green);font-size:14px;margin-top:1px;flex-shrink:0"></i>
+            <span>Added Direct Funded account type — mark any account as Direct Funded to track the consistency rule (best single day / total cycle profit). Set a custom threshold per account (Lucid Direct: 20%, Tradeify Lightning: varies); a progress bar turns red when you&apos;re near the limit and the Near Payout section shows when you&apos;re eligible</span>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--muted2);font-family:var(--font-m)">
+            <i class="ti ti-circle-check" style="color:var(--green);font-size:14px;margin-top:1px;flex-shrink:0"></i>
+            <span>MLL now uses verified per-firm, per-size dollar amounts (Topstep, Lucid, Apex, Alpha, MFF, FundedNext) instead of a flat 4% estimate — 100K and 150K accounts now display correct room</span>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--muted2);font-family:var(--font-m)">
+            <i class="ti ti-circle-check" style="color:var(--green);font-size:14px;margin-top:1px;flex-shrink:0"></i>
+            <span>Fixed MLL room formula when trailing DD has naturally locked — once profit exceeds the loss limit, room correctly shows profit above starting balance instead of an incorrect lower number</span>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--muted2);font-family:var(--font-m)">
+            <i class="ti ti-circle-check" style="color:var(--green);font-size:14px;margin-top:1px;flex-shrink:0"></i>
+            <span>Fixed account balances going blank and Today&apos;s P&amp;L showing $0 when TraderPost refreshes — server now uses the last known good balance instead of writing nulls when a sync catches the page mid-load</span>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--muted2);font-family:var(--font-m)">
+            <i class="ti ti-circle-check" style="color:var(--green);font-size:14px;margin-top:1px;flex-shrink:0"></i>
+            <span>Today&apos;s P&amp;L no longer zeroes out after midnight for active after-midnight sessions — day boundary now uses the 6 PM ET cutoff everywhere, not the calendar midnight</span>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--muted2);font-family:var(--font-m)">
+            <i class="ti ti-circle-check" style="color:var(--green);font-size:14px;margin-top:1px;flex-shrink:0"></i>
+            <span>Background poll no longer replays P&amp;L events from accounts.json — events only arrive via live sync to prevent double-counting</span>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--muted2);font-family:var(--font-m)">
+            <i class="ti ti-circle-check" style="color:var(--green);font-size:14px;margin-top:1px;flex-shrink:0"></i>
+            <span>Payout progress pips are now clickable — click any pip to manually set your green day count; new green days from trades continue to add on top</span>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--muted2);font-family:var(--font-m)">
+            <i class="ti ti-circle-check" style="color:var(--green);font-size:14px;margin-top:1px;flex-shrink:0"></i>
+            <span>MLL now accounts for post-payout accounts — account config modal has a toggle to lock MLL at starting balance, auto-enabled when a payout is logged</span>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--muted2);font-family:var(--font-m)">
+            <i class="ti ti-circle-check" style="color:var(--green);font-size:14px;margin-top:1px;flex-shrink:0"></i>
+            <span>Fixed account cards flashing blank on every extension sync — cards now build off-screen and swap in one frame</span>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--muted2);font-family:var(--font-m)">
+            <i class="ti ti-circle-check" style="color:var(--green);font-size:14px;margin-top:1px;flex-shrink:0"></i>
+            <span>Account cards now show MLL (room left before trailing DD breach) in red next to Peak, which follows the theme color</span>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--muted2);font-family:var(--font-m)">
+            <i class="ti ti-circle-check" style="color:var(--green);font-size:14px;margin-top:1px;flex-shrink:0"></i>
+            <span>Trading day now resets at 6 PM ET regardless of system timezone — no timezone configuration needed on any machine</span>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--muted2);font-family:var(--font-m)">
+            <i class="ti ti-circle-check" style="color:var(--green);font-size:14px;margin-top:1px;flex-shrink:0"></i>
+            <span>Fixed Prop Accounts firm filter — FILTER label and All button were being wiped on each sync; firm filters now work correctly</span>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--muted2);font-family:var(--font-m)">
+            <i class="ti ti-circle-check" style="color:var(--green);font-size:14px;margin-top:1px;flex-shrink:0"></i>
+            <span>Risk Simulator — trailing DD now correctly locks at starting balance once profit exceeds DD limit, matching real prop firm rules</span>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--muted2);font-family:var(--font-m)">
+            <i class="ti ti-circle-check" style="color:var(--green);font-size:14px;margin-top:1px;flex-shrink:0"></i>
+            <span>Active accounts number now follows the selected theme color instead of being hardcoded blue</span>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--muted2);font-family:var(--font-m)">
+            <i class="ti ti-circle-check" style="color:var(--green);font-size:14px;margin-top:1px;flex-shrink:0"></i>
+            <span>Bot journal now shows one combined entry per account per day — multiple trade closes merge into a single log</span>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+          <span style="font-size:13px;font-weight:600;color:var(--text)">v1.3.0</span>
+          <span style="font-size:11px;font-family:var(--font-m);color:var(--muted)">May 2026</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:7px">
+          <div style="display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--muted2);font-family:var(--font-m)">
+            <i class="ti ti-circle-check" style="color:var(--green);font-size:14px;margin-top:1px;flex-shrink:0"></i>
+            <span>Fixed trade closes not appearing in recent activity — null balance scrapes were masking real balance changes in P&L event detection</span>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--muted2);font-family:var(--font-m)">
+            <i class="ti ti-circle-check" style="color:var(--green);font-size:14px;margin-top:1px;flex-shrink:0"></i>
+            <span>Null balance snapshots are no longer stored in history</span>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+          <span style="font-size:13px;font-weight:600;color:var(--text)">v1.2.9</span>
+          <span style="font-size:11px;font-family:var(--font-m);color:var(--muted)">May 2026</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:7px">
+          <div style="display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--muted2);font-family:var(--font-m)">
+            <i class="ti ti-circle-check" style="color:var(--green);font-size:14px;margin-top:1px;flex-shrink:0"></i>
+            <span>Fixed Topstep today's P&L showing cumulative all-time P&L — day start balance now uses yesterday's last known balance instead of the current scrape (which could be $0 if page hadn't loaded)</span>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--muted2);font-family:var(--font-m)">
+            <i class="ti ti-circle-check" style="color:var(--green);font-size:14px;margin-top:1px;flex-shrink:0"></i>
+            <span>Auto-corrects accounts where day start was incorrectly set to account size due to a missed scrape</span>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+          <span style="font-size:13px;font-weight:600;color:var(--text)">v1.2.7</span>
+          <span style="font-size:11px;font-family:var(--font-m);color:var(--muted)">May 2026</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:7px">
+          <div style="display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--muted2);font-family:var(--font-m)">
+            <i class="ti ti-circle-check" style="color:var(--green);font-size:14px;margin-top:1px;flex-shrink:0"></i>
+            <span>Fixed today's P&L showing previous day's value — stale dayPnl now correctly zeroed across all data paths on day rollover</span>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+          <span style="font-size:13px;font-weight:600;color:var(--text)">v1.2.6</span>
+          <span style="font-size:11px;font-family:var(--font-m);color:var(--muted)">May 2026</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:7px">
+          <div style="display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--muted2);font-family:var(--font-m)">
+            <i class="ti ti-circle-check" style="color:var(--green);font-size:14px;margin-top:1px;flex-shrink:0"></i>
+            <span>Fixed today's P&L showing previous day's value on dashboard until first extension sync</span>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+          <span style="font-size:13px;font-weight:600;color:var(--text)">v1.2.5</span>
+          <span style="font-size:11px;font-family:var(--font-m);color:var(--muted)">May 2026</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:7px">
+          <div style="display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--muted2);font-family:var(--font-m)">
+            <i class="ti ti-circle-check" style="color:var(--green);font-size:14px;margin-top:1px;flex-shrink:0"></i>
+            <span>Strategy Map — hover a strategy node now shows only daily risk (removed clutter)</span>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+          <span style="font-size:13px;font-weight:600;color:var(--text)">v1.2.4</span>
+          <span style="font-size:11px;font-family:var(--font-m);color:var(--muted)">May 2026</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:7px">
+          <div style="display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--muted2);font-family:var(--font-m)">
+            <i class="ti ti-circle-check" style="color:var(--green);font-size:14px;margin-top:1px;flex-shrink:0"></i>
+            <span>Topstep — fixed today's P&L showing $50,000+ inflated due to stale day-start balance from before the balance correction</span>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--muted2);font-family:var(--font-m)">
+            <i class="ti ti-circle-check" style="color:var(--green);font-size:14px;margin-top:1px;flex-shrink:0"></i>
+            <span>Fixed today's P&L showing $0 when PropDesk is started after the bot already traded — day-start balance is now auto-corrected from the journal</span>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--muted2);font-family:var(--font-m)">
+            <i class="ti ti-circle-check" style="color:var(--green);font-size:14px;margin-top:1px;flex-shrink:0"></i>
+            <span>Strategy Map — Pure Hunt schedule corrected to MWTF</span>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--muted2);font-family:var(--font-m)">
+            <i class="ti ti-circle-check" style="color:var(--green);font-size:14px;margin-top:1px;flex-shrink:0"></i>
+            <span>Strategy Map — double-click Pure Hunt, Akimbo, or Safe Flow to set a daily risk limit; hover to see it</span>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--muted2);font-family:var(--font-m)">
+            <i class="ti ti-circle-check" style="color:var(--green);font-size:14px;margin-top:1px;flex-shrink:0"></i>
+            <span>Added Bulenox support — firm detection, logo, and payout tracking</span>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--muted2);font-family:var(--font-m)">
+            <i class="ti ti-circle-check" style="color:var(--green);font-size:14px;margin-top:1px;flex-shrink:0"></i>
+            <span>Fixed FundedNext logo not showing</span>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+          <span style="font-size:13px;font-weight:600;color:var(--text)">v1.2.0</span>
+          <span style="font-size:11px;font-family:var(--font-m);color:var(--muted)">May 2026</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:7px">
+          <div style="display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--muted2);font-family:var(--font-m)">
+            <i class="ti ti-circle-check" style="color:var(--green);font-size:14px;margin-top:1px;flex-shrink:0"></i>
+            <span>Bot Journal — day snapshot redesigned with shooting stars, globe watermark, and green accent theme</span>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+          <span style="font-size:13px;font-weight:600;color:var(--text)">v1.1.9</span>
+          <span style="font-size:11px;font-family:var(--font-m);color:var(--muted)">May 2026</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:7px">
+          <div style="display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--muted2);font-family:var(--font-m)">
+            <i class="ti ti-circle-check" style="color:var(--green);font-size:14px;margin-top:1px;flex-shrink:0"></i>
+            <span>Payouts — logging a payout now resets the 5 green day counter so it starts fresh for the next payout cycle</span>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--muted2);font-family:var(--font-m)">
+            <i class="ti ti-circle-check" style="color:var(--green);font-size:14px;margin-top:1px;flex-shrink:0"></i>
+            <span>Payouts — balance drop after a payout no longer gets logged as a trading loss or distorts drawdown and all-time P&L</span>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--muted2);font-family:var(--font-m)">
+            <i class="ti ti-circle-check" style="color:var(--green);font-size:14px;margin-top:1px;flex-shrink:0"></i>
+            <span>Topstep — balance now reads correctly (TraderPost shows profit-only; full account balance is restored automatically)</span>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+          <span style="font-size:13px;font-weight:600;color:var(--text)">v1.1.8</span>
+          <span style="font-size:11px;font-family:var(--font-m);color:var(--muted)">May 2026</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:7px">
+          <div style="display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--muted2);font-family:var(--font-m)">
+            <i class="ti ti-circle-check" style="color:var(--green);font-size:14px;margin-top:1px;flex-shrink:0"></i>
+            <span>Sidebar — Dashboard, Prop Accounts, Bot Journal, and Strategy Map consolidated under Main</span>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--muted2);font-family:var(--font-m)">
+            <i class="ti ti-circle-check" style="color:var(--green);font-size:14px;margin-top:1px;flex-shrink:0"></i>
+            <span>Risk Simulator — click any simulation dot to see full trade calendar, wins, losses, win rate, and net P&L for that run</span>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--muted2);font-family:var(--font-m)">
+            <i class="ti ti-circle-check" style="color:var(--green);font-size:14px;margin-top:1px;flex-shrink:0"></i>
+            <span>P&L Simulator — Per Account Estimate now shows "You keep/acct" for direct comparison with combined monthly keep</span>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+          <span style="font-size:13px;font-weight:600;color:var(--text)">v1.1.6</span>
+          <span style="font-size:11px;font-family:var(--font-m);color:var(--muted)">May 2026</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:7px">
+          <div style="display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--muted2);font-family:var(--font-m)">
+            <i class="ti ti-circle-check" style="color:var(--green);font-size:14px;margin-top:1px;flex-shrink:0"></i>
+            <span>P&L Simulator — Per Account Estimate now shows "You keep/acct" making it easy to compare with combined monthly keep</span>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--muted2);font-family:var(--font-m)">
+            <i class="ti ti-circle-check" style="color:var(--green);font-size:14px;margin-top:1px;flex-shrink:0"></i>
+            <span>P&L Simulator — clearer labels: Gross wins/acct, Loss exposure/acct, You keep/acct, Net/acct (after costs)</span>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+          <span style="font-size:13px;font-weight:600;color:var(--text)">v1.1.5</span>
+          <span style="font-size:11px;font-family:var(--font-m);color:var(--muted)">May 2026</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:7px">
+          <div style="display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--muted2);font-family:var(--font-m)">
+            <i class="ti ti-circle-check" style="color:var(--green);font-size:14px;margin-top:1px;flex-shrink:0"></i>
+            <span>P&L Simulator — Re-run button on calendar to regenerate simulated month instantly</span>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--muted2);font-family:var(--font-m)">
+            <i class="ti ti-circle-check" style="color:var(--green);font-size:14px;margin-top:1px;flex-shrink:0"></i>
+            <span>P&L Simulator — added Per Account Estimate showing win gross, loss exposure, and net per account</span>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--muted2);font-family:var(--font-m)">
+            <i class="ti ti-circle-check" style="color:var(--green);font-size:14px;margin-top:1px;flex-shrink:0"></i>
+            <span>Risk & P&L simulators overhauled — trade frequency and partial exit logic now closer to real strategy behavior</span>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--muted2);font-family:var(--font-m)">
+            <i class="ti ti-circle-check" style="color:var(--green);font-size:14px;margin-top:1px;flex-shrink:0"></i>
+            <span>Akimbo now uses Pure Hunt partial exit distribution (0.7R–2.0R) in both simulators</span>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--muted2);font-family:var(--font-m)">
+            <i class="ti ti-circle-check" style="color:var(--green);font-size:14px;margin-top:1px;flex-shrink:0"></i>
+            <span>Safe Flow corrected to ~2–3 trades/month, Akimbo to ~2–3 trades/week</span>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+          <span style="font-size:13px;font-weight:600;color:var(--text)">v1.1.1</span>
+          <span style="font-size:11px;font-family:var(--font-m);color:var(--muted)">May 2026</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:7px">
+          <div style="display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--muted2);font-family:var(--font-m)">
+            <i class="ti ti-circle-check" style="color:var(--green);font-size:14px;margin-top:1px;flex-shrink:0"></i>
+            <span>Fixed false trade entries caused by failed balance scrapes</span>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+          <span style="font-size:13px;font-weight:600;color:var(--text)">v1.1.0</span>
+          <span style="font-size:11px;font-family:var(--font-m);color:var(--muted)">May 2026</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:7px">
+          <div style="display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--muted2);font-family:var(--font-m)">
+            <i class="ti ti-circle-check" style="color:var(--green);font-size:14px;margin-top:1px;flex-shrink:0"></i>
+            <span>Version number now visible in Settings</span>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--muted2);font-family:var(--font-m)">
+            <i class="ti ti-circle-check" style="color:var(--green);font-size:14px;margin-top:1px;flex-shrink:0"></i>
+            <span>Fixed payout grid view — Calendar and Add Payout buttons always visible</span>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--muted2);font-family:var(--font-m)">
+            <i class="ti ti-circle-check" style="color:var(--green);font-size:14px;margin-top:1px;flex-shrink:0"></i>
+            <span>Added FundedNext support — accounts sync and display with logo</span>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
           <span style="font-size:13px;font-weight:600;color:var(--text)">v1.0.0</span>
           <span style="font-size:11px;font-family:var(--font-m);color:var(--muted)">May 2026</span>
         </div>
@@ -1573,12 +2044,9 @@ html,body{width:100%;height:100%;overflow:hidden;background:#09090d}
           </div>
           <div style="display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--muted2);font-family:var(--font-m)">
             <i class="ti ti-circle-check" style="color:var(--green);font-size:14px;margin-top:1px;flex-shrink:0"></i>
-            <span>8 themes, collapsible sidebar, bot journal redesign</span>
+            <span>Collapsible sidebar, bot journal, P&L tracking</span>
           </div>
         </div>
-      </div>
-      <div style="padding:16px;border-radius:12px;background:var(--bg3);border:1px solid var(--border);text-align:center">
-        <div style="font-size:12px;font-family:var(--font-m);color:var(--muted)">More updates coming soon</div>
       </div>
     </div>
   </div>
@@ -1614,21 +2082,65 @@ function tick(){
 tick();setInterval(tick,1000);
 
 // ─── LIVE SYNC FROM LOCAL SERVER ───
-const FIRM_COLORS={LUCID:'fp-l',TOPSTEP:'fp-a',TRADEIFY:'fp-t',APEX:'fp-a',MFF:'fp-l',ALPHA:'fp-t',UNKNOWN:'fp-a'};
-const FIRM_LABELS={LUCID:'Lucid',TOPSTEP:'Topstep',TRADEIFY:'Tradeify',APEX:'Apex',MFF:'My Funded Futures',ALPHA:'Alpha Capital',UNKNOWN:'Unknown'};
+const FIRM_COLORS={LUCID:'fp-l',TOPSTEP:'fp-a',TRADEIFY:'fp-t',APEX:'fp-a',MFF:'fp-l',ALPHA:'fp-t',FUNDEDNEXT:'fp-t',BULENOX:'fp-l',UNKNOWN:'fp-a'};
+const FIRM_LABELS={LUCID:'Lucid',TOPSTEP:'Topstep',TRADEIFY:'Tradeify',APEX:'Apex',MFF:'My Funded Futures',ALPHA:'Alpha Capital',FUNDEDNEXT:'FundedNext',BULENOX:'Bulenox',UNKNOWN:'Unknown'};
 let liveAccounts=[];
 let syncStatus='offline';
+
+// Track which accounts have already had their day-start corrected this session
+const _dayStartCorrected = new Set();
+
+function autoCorrectDayStarts(accounts) {
+  accounts.forEach(function(a) {
+    const key = a.id || a.name;
+    if (_dayStartCorrected.has(key)) return;
+    if (a.dayPnl === null || Math.abs(a.dayPnl) > 1) return; // non-zero dayPnl — no correction needed
+    // Check if the journal has P&L for this account today
+    const todayTrades = (typeof bjTrades !== 'undefined' ? bjTrades : []).filter(function(t) {
+      return t.date === todayKey && (t.acctName === a.name || (!t.acctName && (t.firm||'').toUpperCase() === (a.firm||'').toUpperCase()));
+    });
+    const journalPnl = todayTrades.reduce(function(s,t){ return s + (t.pnl||0); }, 0);
+    if (Math.abs(journalPnl) < 1) return; // journal also near $0 — nothing to correct
+    // Server was started after trades — back-calculate correct dayStartBal
+    const currentBal = parseFloat(String(a.balance||'0').replace(/[$,]/g,''));
+    if (!currentBal) return;
+    const dayStartBal = Math.round((currentBal - journalPnl) * 100) / 100;
+    _dayStartCorrected.add(key);
+    fetch('http://localhost:3001/set-day-start', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ accountKey: key, dayStartBal })
+    }).then(function(){ fetchLiveAccounts(); }).catch(function(){});
+  });
+}
+
+// ET 6 PM trading day boundary — matches the server's getTradingDayKey
+function getEtTradingDayKey(d){
+  const etStr=d.toLocaleString('en-US',{timeZone:'America/New_York'});
+  const et=new Date(etStr);
+  if(et.getHours()>=18)et.setDate(et.getDate()+1);
+  return et.getFullYear()+'-'+String(et.getMonth()+1).padStart(2,'0')+'-'+String(et.getDate()).padStart(2,'0');
+}
+// Track last IPC update time — poll skips render if IPC fired recently (prevents stale-data flash)
+let lastIpcUpdateTime=0;
 
 function fetchLiveAccounts(){
   fetch('http://localhost:3001/accounts')
     .then(r=>r.json())
     .then(data=>{
       if(data.accounts && data.accounts.length>0){
+        // Use ET 6 PM trading day boundary (not calendar day) so after-midnight sessions stay correct
+        if(data.synced_at){
+          const syncDay=getEtTradingDayKey(new Date(data.synced_at));
+          const today=getEtTradingDayKey(new Date());
+          if(syncDay!==today) data.accounts.forEach(a=>{ a.dayPnl=0; });
+        }
         liveAccounts=data.accounts;
         syncStatus='online';
-        if(data.pnlEvents&&data.pnlEvents.length)autoLogPnlEvents(data.pnlEvents);
+        // pnlEvents must NOT be replayed from the poll — they arrive via IPC only (avoids double-counting)
         renderLiveAccounts(data);
         updateSyncBadge(data.synced_at, data.count);
+        autoCorrectDayStarts(data.accounts);
       }
     })
     .catch(()=>{
@@ -1670,11 +2182,12 @@ function renderLiveAccounts(data){
 
   // Active accounts — funded = pink toggle, rest = eval
   const fundedCount=accounts.filter(a=>{const cfg=acctCfg['acct_cfg_'+(a.id||a.name)]||{};return cfg.type==='funded';}).length;
-  const evalCount=accounts.length-fundedCount;
+  const directCount=accounts.filter(a=>{const cfg=acctCfg['acct_cfg_'+(a.id||a.name)]||{};return cfg.type==='direct';}).length;
+  const evalCount=accounts.length-fundedCount-directCount;
   const acctEl=document.getElementById('stat-accts');
   if(acctEl) acctEl.textContent=accounts.length;
   const acctSub=document.getElementById('stat-accts-sub');
-  if(acctSub) acctSub.textContent=fundedCount+' funded · '+evalCount+' eval';
+  if(acctSub){const parts=[];if(fundedCount)parts.push(fundedCount+' funded');if(directCount)parts.push(directCount+' direct');if(evalCount)parts.push(evalCount+' eval');acctSub.textContent=parts.join(' · ')||'—';}
   // Group by firm
   const byFirm={};
   accounts.forEach(a=>{const f=a.firm||'UNKNOWN';if(!byFirm[f])byFirm[f]=[];byFirm[f].push(a);});
@@ -1682,16 +2195,16 @@ function renderLiveAccounts(data){
   const acctPage=document.getElementById('page-accounts');
   const acctsBadge=document.getElementById('accts-badge')||acctPage.querySelector('.badge');
   if(acctsBadge) acctsBadge.textContent=accounts.length+' accounts';
-  acctPage.querySelectorAll('.firm-row,.cards').forEach(el=>el.remove());
+  const acctFragment=document.createDocumentFragment();
   Object.entries(byFirm).forEach(([firm,accs])=>{
     const baseMap={LUCID:50000,TOPSTEP:50000,TRADEIFY:50000,APEX:50000};
     const base=baseMap[firm]||50000;
     const firmRow=document.createElement('div');
     firmRow.className='firm-row';
-    const rowLogoUrl={LUCID:'https://www.google.com/s2/favicons?domain=lucidtrading.com&sz=32',TOPSTEP:'https://www.google.com/s2/favicons?domain=topstep.com&sz=32',TRADEIFY:'https://www.google.com/s2/favicons?domain=tradeify.co&sz=32',APEX:'https://www.google.com/s2/favicons?domain=apextraderfunding.com&sz=32',MFF:'https://www.google.com/s2/favicons?domain=myfundedfutures.com&sz=32',ALPHA:'https://www.google.com/s2/favicons?domain=alphacapitalgroup.uk&sz=32'}[firm]||'';
+    const rowLogoUrl={LUCID:'https://www.google.com/s2/favicons?domain=lucidtrading.com&sz=32',TOPSTEP:'https://www.google.com/s2/favicons?domain=topstep.com&sz=32',TRADEIFY:'https://www.google.com/s2/favicons?domain=tradeify.co&sz=32',APEX:'https://www.google.com/s2/favicons?domain=apextraderfunding.com&sz=32',MFF:'https://www.google.com/s2/favicons?domain=myfundedfutures.com&sz=32',ALPHA:'https://www.google.com/s2/favicons?domain=alphacapitalgroup.uk&sz=32',FUNDEDNEXT:'https://www.google.com/s2/favicons?domain=fundednext.com&sz=32'}[firm]||'';
     const rowLogo=rowLogoUrl?'<img src="'+rowLogoUrl+'" style="width:16px;height:16px;border-radius:4px;object-fit:contain;flex-shrink:0" onerror="this.style.display=\'none\'"> ':' ';
     firmRow.innerHTML='<span class="fp '+(FIRM_COLORS[firm]||'fp-a')+'" style="display:flex;align-items:center;gap:6px">'+rowLogo+(FIRM_LABELS[firm]||firm)+'</span><div class="fl"></div><span class="fc">'+accs.length+' account'+(accs.length>1?'s':'')+'</span>';
-    acctPage.appendChild(firmRow);
+    acctFragment.appendChild(firmRow);
     const grid=document.createElement('div');
     grid.className='cards';
     accs.forEach(a=>{
@@ -1701,19 +2214,20 @@ function renderLiveAccounts(data){
       const savedKey='acct_cfg_'+(a.id||a.name);
       const savedCfg=acctCfg[savedKey]||{};
       if(savedCfg.type==='funded') card.classList.add('type-funded');
-      else if(savedCfg.type==='eval') card.classList.add('type-eval');
+      else if(savedCfg.type==='direct') card.classList.add('type-direct');
+      else card.classList.add('type-eval');
       if(savedCfg.strat) card.dataset.strat=savedCfg.strat;
       card.dataset.acctKey=savedKey;
       card.dataset.acctName=a.name;
       card.addEventListener('dblclick',function(){
         openAcctModal(this);
       });
-      const firmLogos={LUCID:'https://www.google.com/s2/favicons?domain=lucidtrading.com&sz=32',TOPSTEP:'https://www.google.com/s2/favicons?domain=topstep.com&sz=32',TRADEIFY:'https://www.google.com/s2/favicons?domain=tradeify.co&sz=32',APEX:'https://www.google.com/s2/favicons?domain=apextraderfunding.com&sz=32',MFF:'https://www.google.com/s2/favicons?domain=myfundedfutures.com&sz=32',ALPHA:'https://www.google.com/s2/favicons?domain=alphacapitalgroup.uk&sz=32'};
+      const firmLogos={LUCID:'https://www.google.com/s2/favicons?domain=lucidtrading.com&sz=32',TOPSTEP:'https://www.google.com/s2/favicons?domain=topstep.com&sz=32',TRADEIFY:'https://www.google.com/s2/favicons?domain=tradeify.co&sz=32',APEX:'https://www.google.com/s2/favicons?domain=apextraderfunding.com&sz=32',MFF:'https://www.google.com/s2/favicons?domain=myfundedfutures.com&sz=32',ALPHA:'https://www.google.com/s2/favicons?domain=alphacapitalgroup.uk&sz=32',FUNDEDNEXT:'https://www.google.com/s2/favicons?domain=fundednext.com&sz=32'};
       const logoUrl=firmLogos[firm]||'';
       const logoImg=logoUrl?'<img src="'+logoUrl+'" style="width:20px;height:20px;border-radius:5px;object-fit:contain;background:var(--bg4);flex-shrink:0" onerror="this.style.display=\'none\'"> ':'';
       const cfgType=savedCfg.type||'eval';
-      const tagClass=cfgType==='funded'?'tg':'ta';
-      const tagLabel=cfgType==='funded'?'Funded':'Eval';
+      const tagClass=cfgType==='funded'?'tg':cfgType==='direct'?'td':'ta';
+      const tagLabel=cfgType==='funded'?'Funded':cfgType==='direct'?'Direct':'Eval';
       const inner=
         '<div class="c-top">'+
           '<div style="display:flex;align-items:center;gap:9px">'+logoImg+'<div><div class="c-nm">'+a.name+'</div><div class="c-id">#'+(a.id||'').substring(0,8)+'...</div></div></div>'+
@@ -1730,35 +2244,76 @@ function renderLiveAccounts(data){
         var rawBal=parseFloat(String(a.balance||'').replace(/[$,]/g,''));
         var passed=a.firstBal!==null&&a.profitTarget&&rawBal>=(a.firstBal+a.profitTarget);
         var progressBar='';
+        // Once profit >= lossLimit the trailing floor has locked at starting balance — room is just allTimePnl.
+        // Before that it trails: room = lossLimit - (peak - bal) = lossLimit + drawdown.
+        var llNaturallyLocked=a.lossLimit!=null&&(a.allTimePnl||0)>=(a.lossLimit||0);
+        var mllRoom=a.lossLimit!=null&&a.drawdown!=null?(savedCfg.mllLocked||llNaturallyLocked?Math.max(0,Math.round(a.allTimePnl||0)):Math.max(0,Math.round(a.lossLimit+a.drawdown))):null;
+        var mllSpan=mllRoom!==null?'<span style="font-size:10px;font-family:var(--font-m);color:var(--muted)"> \u00a0MLL: <\/span><span style="font-size:10px;font-family:var(--font-m);color:var(--red)">$'+mllRoom.toLocaleString()+'<\/span>':'';
         if(cfgType==='funded'){
-          var greenDays=getGreenDays(a.name,a.firm);
-          var greenCount=Math.min(greenDays.length,5);
+          var naturalCount=getGreenDays(a.name,a.firm,a.acctSize).length;
+          var greenCount=getGreenCount(savedKey,a.name,a.firm,a.acctSize);
           var eligible=greenCount>=5;
           var pips='';
-          for(var pi=0;pi<5;pi++) pips+='<div style="flex:1;height:6px;border-radius:3px;background:'+(pi<greenCount?'var(--green)':'var(--bg4)')+'"></div>';
+          for(var pi=0;pi<5;pi++) pips+='<div style="flex:1;height:6px;border-radius:3px;cursor:pointer;transition:opacity .15s;background:'+(pi<greenCount?'var(--green)':'var(--bg4)')+'" onclick="setGreenManual(\''+savedKey+'\',\''+a.name.replace(/'/g,"\\'")+'\',' +(pi+1)+','+naturalCount+')" onmouseenter="this.style.opacity=\'.6\'" onmouseleave="this.style.opacity=\'1\'"></div>';
           if(eligible){
             progressBar='<div style="margin-top:12px;background:rgba(0,214,143,.08);border:1px solid rgba(0,214,143,.25);border-radius:8px;padding:10px 12px"><div style="font-size:13px;font-weight:700;color:var(--green);margin-bottom:6px">Payout Eligible!</div><div style="display:flex;gap:4px;margin-bottom:8px">'+pips+'</div></div>';
           }else{
             progressBar='<div style="margin-top:12px"><div style="display:flex;justify-content:space-between;margin-bottom:6px"><span style="font-size:9px;font-family:var(--font-m);color:var(--muted);letter-spacing:.8px">PAYOUT PROGRESS</span><span style="font-size:9px;font-family:var(--font-m);color:var(--muted2)">'+greenCount+' / 5 green days</span></div><div style="display:flex;gap:4px">'+pips+'</div><div style="font-size:9px;font-family:var(--font-m);color:var(--muted);margin-top:4px">$150+ P&L days count</div></div>';
           }
-          progressBar+='<div class="c-foot" style="margin-top:8px"><span style="color:var(--muted);font-size:10px;font-family:var(--font-m)">Peak: '+(a.peakBal!=null?'$'+a.peakBal.toLocaleString('en-US',{minimumFractionDigits:2}):'--')+'</span><span style="color:var(--green);font-size:10px">&#9679; Synced live</span></div>';
+          progressBar+='<div class="c-foot" style="margin-top:8px"><span style="font-size:10px;font-family:var(--font-m);color:var(--muted)">Peak: <\/span><span style="font-size:10px;font-family:var(--font-m);color:var(--accent)">'+(a.peakBal!=null?'$'+a.peakBal.toLocaleString('en-US',{minimumFractionDigits:2}):'--')+'<\/span>'+mllSpan+'<span style="color:var(--green);font-size:10px">&#9679; Synced live</span></div>';
         }else if(cfgType==='eval'&&passed){
-          progressBar='<div style="margin-top:12px;background:rgba(0,214,143,.08);border:1px solid rgba(0,214,143,.25);border-radius:8px;padding:10px 12px;text-align:center"><div style="font-size:13px;font-weight:700;color:var(--green)">Evaluation Passed!</div><div style="font-size:10px;font-family:var(--font-m);color:var(--muted)">Request your funded account</div></div><div class="c-foot" style="margin-top:8px"><span style="color:var(--muted);font-size:10px;font-family:var(--font-m)">Peak: '+(a.peakBal!=null?'$'+a.peakBal.toLocaleString('en-US',{minimumFractionDigits:2}):'--')+'</span><span style="color:var(--green);font-size:10px">&#9679; Synced live</span></div>';
+          progressBar='<div style="margin-top:12px;background:rgba(0,214,143,.08);border:1px solid rgba(0,214,143,.25);border-radius:8px;padding:10px 12px;text-align:center"><div style="font-size:13px;font-weight:700;color:var(--green)">Evaluation Passed!</div><div style="font-size:10px;font-family:var(--font-m);color:var(--muted)">Request your funded account</div></div><div class="c-foot" style="margin-top:8px"><span style="font-size:10px;font-family:var(--font-m);color:var(--muted)">Peak: <\/span><span style="font-size:10px;font-family:var(--font-m);color:var(--accent)">'+(a.peakBal!=null?'$'+a.peakBal.toLocaleString('en-US',{minimumFractionDigits:2}):'--')+'<\/span>'+mllSpan+'<span style="color:var(--green);font-size:10px">&#9679; Synced live</span></div>';
+        }else if(cfgType==='direct'){
+          // Profit target + consistency rule — need both to be payout eligible
+          // Use allTimePnl (real account P&L) for target and consistency denominator;
+          // bjTrades used only for best-day since it has per-day breakdown
+          var acctCycleTrades=(typeof bjTrades!=='undefined'?bjTrades:[]).filter(function(t){return t.acctName===a.name;});
+          var cycleProfit=a.allTimePnl||0;
+          var cycleBestDay=acctCycleTrades.filter(function(t){return t.pnl>0;}).reduce(function(best,t){return Math.max(best,t.pnl);},0);
+          var conThreshold=savedCfg.consistencyThreshold||20;
+          var profitTarget=a.profitTarget||Math.round((a.acctSize||50000)*0.06);
+          var targetMet=cycleProfit>=profitTarget;
+          var conPct=cycleProfit>0?Math.round((cycleBestDay/cycleProfit)*100):0;
+          var conMet=cycleProfit>0&&conPct<=conThreshold;
+          var conFill=Math.min(100,cycleProfit>0?Math.round((conPct/conThreshold)*100):0);
+          var conBarCol=conPct>conThreshold?'var(--red)':conFill>70?'var(--amber)':'var(--green)';
+          var targetFill=Math.min(100,Math.max(0,Math.round((cycleProfit/profitTarget)*100)));
+          var targetBarCol=targetMet?'var(--green)':'#63b3ed';
+          progressBar=
+            '<div style="margin-top:12px">'+
+              '<div style="display:flex;justify-content:space-between;margin-bottom:4px">'+
+                '<span style="font-size:9px;font-family:var(--font-m);color:var(--muted);letter-spacing:.8px">PROFIT TARGET &middot; +$'+profitTarget.toLocaleString()+'</span>'+
+                '<span style="font-size:9px;font-family:var(--font-m);color:'+targetBarCol+'">'+(cycleProfit>=0?'+$':'-$')+Math.abs(cycleProfit).toLocaleString()+'</span>'+
+              '</div>'+
+              '<div style="height:4px;background:var(--bg4);border-radius:2px;overflow:hidden;margin-bottom:8px"><div style="height:100%;width:'+targetFill+'%;background:'+targetBarCol+';border-radius:2px;transition:width .4s"></div></div>'+
+              '<div style="display:flex;justify-content:space-between;margin-bottom:4px">'+
+                '<span style="font-size:9px;font-family:var(--font-m);color:var(--muted);letter-spacing:.8px">CONSISTENCY &middot; MAX '+conThreshold+'%</span>'+
+                '<span style="font-size:9px;font-family:var(--font-m);color:'+conBarCol+'">'+(cycleProfit>0?conPct+'%':'—')+'</span>'+
+              '</div>'+
+              '<div style="height:4px;background:var(--bg4);border-radius:2px;overflow:hidden"><div style="height:100%;width:'+conFill+'%;background:'+conBarCol+';border-radius:2px;transition:width .4s"></div></div>'+
+              '<div style="font-size:9px;font-family:var(--font-m);color:var(--muted);margin-top:3px">'+
+                (cycleBestDay>0?'Best day: $'+cycleBestDay.toLocaleString():'No trade data yet')+
+              '</div>'+
+            '</div>'+
+            '<div class="c-foot" style="margin-top:8px"><span style="font-size:10px;font-family:var(--font-m);color:var(--muted)">Peak: <\/span><span style="font-size:10px;font-family:var(--font-m);color:var(--accent)">'+(a.peakBal!=null?'$'+a.peakBal.toLocaleString('en-US',{minimumFractionDigits:2}):'--')+'<\/span>'+mllSpan+'<span style="color:var(--green);font-size:10px">&#9679; Synced live</span></div>';
         }else if(cfgType==='eval'&&a.evalProgress!=null){
           var pct=a.evalProgress;
           var ddPct=a.ddDanger||0;
           var barCol=ddPct>70?'var(--red)':ddPct>40?'var(--amber)':'var(--green)';
           var target=a.profitTarget?'+$'+a.profitTarget.toLocaleString():'target';
           var ddLimit=a.lossLimit?'-$'+a.lossLimit.toLocaleString():'limit';
-          progressBar='<div style="margin-top:12px"><div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="font-size:9px;font-family:var(--font-m);color:var(--muted);letter-spacing:.8px">EVAL PROGRESS · '+target+'</span><span style="font-size:9px;font-family:var(--font-m);color:'+barCol+'">'+pct+'%</span></div><div style="height:4px;background:var(--bg4);border-radius:2px;overflow:hidden"><div style="height:100%;width:'+pct+'%;background:'+barCol+';border-radius:2px"></div></div>'+(ddPct>0?'<div style="font-size:9px;font-family:var(--font-m);color:'+(ddPct>70?'var(--red)':ddPct>40?'var(--amber)':'var(--muted)')+';margin-top:3px">DD: '+ddPct+'% of '+ddLimit+'</div>':'')+'</div><div class="c-foot" style="margin-top:8px"><span style="color:var(--muted);font-size:10px;font-family:var(--font-m)">Peak: '+(a.peakBal!=null?'$'+a.peakBal.toLocaleString('en-US',{minimumFractionDigits:2}):'--')+'</span><span style="color:var(--green);font-size:10px">&#9679; Synced live</span></div>';
+          progressBar='<div style="margin-top:12px"><div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="font-size:9px;font-family:var(--font-m);color:var(--muted);letter-spacing:.8px">EVAL PROGRESS · '+target+'</span><span style="font-size:9px;font-family:var(--font-m);color:'+barCol+'">'+pct+'%</span></div><div style="height:4px;background:var(--bg4);border-radius:2px;overflow:hidden"><div style="height:100%;width:'+pct+'%;background:'+barCol+';border-radius:2px"></div></div>'+(ddPct>0?'<div style="font-size:9px;font-family:var(--font-m);color:'+(ddPct>70?'var(--red)':ddPct>40?'var(--amber)':'var(--muted)')+';margin-top:3px">DD: '+ddPct+'% of '+ddLimit+'</div>':'')+'</div><div class="c-foot" style="margin-top:8px"><span style="font-size:10px;font-family:var(--font-m);color:var(--muted)">Peak: <\/span><span style="font-size:10px;font-family:var(--font-m);color:var(--accent)">'+(a.peakBal!=null?'$'+a.peakBal.toLocaleString('en-US',{minimumFractionDigits:2}):'--')+'<\/span>'+mllSpan+'<span style="color:var(--green);font-size:10px">&#9679; Synced live</span></div>';
         }else{
           progressBar='<div class="c-foot" style="margin-top:10px"><span style="color:var(--muted);font-size:10px;font-family:var(--font-m)">Payout progress — coming soon</span><span style="color:var(--green);font-size:10px">&#9679; Synced live</span></div>';
         }
         card.innerHTML=inner+progressBar;
       grid.appendChild(card);
     });
-    acctPage.appendChild(grid);
+    acctFragment.appendChild(grid);
   });
+  // Swap old cards for new in one paint — no blank flash
+  acctPage.querySelectorAll('.firm-row,.cards').forEach(el=>el.remove());
+  acctPage.appendChild(acctFragment);
   // Build dynamic filter buttons from actual firms present
   const firmKeys = Object.keys(byFirm);
   if(typeof buildFilterButtons === 'function') buildFilterButtons(firmKeys);
@@ -1801,7 +2356,7 @@ function buildFilterButtons(firms) {
   // Accounts filter row (prop-filter-row) uses setAcctFilter
   const acctRow = document.getElementById('prop-filter-row');
   if(acctRow) {
-    acctRow.querySelectorAll('.fb:not(#filter-all)').forEach(b => b.remove());
+    acctRow.querySelectorAll('.fb:not(#prop-filter-all)').forEach(b => b.remove());
     firms.forEach(firm => {
       const btn = document.createElement('button');
       btn.className = 'fb';
@@ -1851,7 +2406,7 @@ function applyAcctFilter() {
 const strats=[
   {id:'sf',name:'Safe Flow',sub:'Tue+Thu',color:'#00d68f'},
   {id:'ak',name:'Akimbo',sub:'MWF+TuTh',color:'#7c5cfc'},
-  {id:'ph',name:'Pure Hunt',sub:'MWF',color:'#f0a500'}
+  {id:'ph',name:'Pure Hunt',sub:'MWTF',color:'#f0a500'}
 ];
 
 // ── Live map accounts ──
@@ -1937,6 +2492,7 @@ function attachMapEvents(){
   mc.addEventListener('mouseup', onMapUp);
   mc.addEventListener('mouseleave', onMapLeave);
   mc.addEventListener('wheel', onMapWheel, {passive:false});
+  mc.addEventListener('dblclick', onMapDblClick);
   window.addEventListener('resize', resizeMap);
 }
 
@@ -2144,10 +2700,36 @@ function onMapMove(e){
   hovNode=node||null;
   mc.style.cursor=node?'pointer':'default';
 
-  if(node&&node.type==='acct'){
+  if(node&&node.type==='strat'){
+    const s=node.data;
+    const risk=localStorage.getItem('strat_daily_risk_'+s.id);
+    document.getElementById('mp-nm').textContent=s.name;
+    document.getElementById('mp-nm').style.color=s.color;
+    document.getElementById('mp-id').textContent='';
+    document.getElementById('mp-pnl').textContent=risk?'$'+parseFloat(risk).toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:2}):'Not set';
+    document.getElementById('mp-pnl').style.color=risk?s.color:'var(--muted)';
+    document.getElementById('mp-bal').textContent='Daily Risk';
+    document.getElementById('mp-progress-container').innerHTML='';
+    document.getElementById('mp-days').textContent='';
+    document.getElementById('mp-cl-avg').textContent='';
+    document.getElementById('mp-avg').textContent='';
+    document.getElementById('mp-strat').textContent='';
+    document.getElementById('mp-breach').textContent='';
+    const mpTag=mpopup.querySelector('.mp-tag'); if(mpTag) mpTag.style.display='none';
+    const ar=marea.getBoundingClientRect();
+    const sx=e.clientX-ar.left, sy=e.clientY-ar.top;
+    let px=sx+18, py=sy-100;
+    if(px+240>ar.width) px=sx-258;
+    if(py<8) py=8;
+    mpopup.style.left=px+'px'; mpopup.style.top=py+'px';
+    mpopup.classList.add('show');
+  } else if(node&&node.type==='acct'){
     const a=node.data;
     const stratLabels={ph:'Pure Hunt',sf:'Safe Flow',ak:'Akimbo'};
+    document.getElementById('mp-pnl').style.color='var(--green)';
     document.getElementById('mp-nm').textContent=a.name||a.firm||'Account';
+    document.getElementById('mp-nm').style.color='';
+    const mpTag=mpopup.querySelector('.mp-tag'); if(mpTag) mpTag.style.display='';
     document.getElementById('mp-id').textContent='#'+(a.id||'').substring(0,18);
     document.getElementById('mp-pnl').textContent=a.balance||'—';
     document.getElementById('mp-bal').textContent='Current balance';
@@ -2159,7 +2741,7 @@ function onMapMove(e){
     var mpAvgEl=document.getElementById('mp-avg');
     var mpClAvg=document.getElementById('mp-cl-avg');
     if(cfgType==='funded'){
-      var gd=typeof getGreenDays==='function'?getGreenDays(a.name,a.firm):[];
+      var gd=typeof getGreenDays==='function'?getGreenDays(a.name,a.firm,a.acctSize):[];
       var cnt=Math.min(gd.length,5);
       var circles='';
       for(var ci=0;ci<5;ci++) circles+='<div style="width:14px;height:14px;border-radius:50%;background:'+(ci<cnt?'var(--green)':'var(--bg4)')+';border:1px solid '+(ci<cnt?'var(--green)':'var(--border2)')+'"></div>';
@@ -2198,6 +2780,44 @@ function onMapLeave(){
   dragNode=null; isPanning=false;
   hovNode=null; mpopup.classList.remove('show');
 }
+
+let _drStratKey=null;
+function onMapDblClick(e){
+  const r=mc.getBoundingClientRect();
+  const node=getMapNode(e.clientX-r.left,e.clientY-r.top);
+  if(!node||node.type!=='strat') return;
+  const s=node.data;
+  _drStratKey='strat_daily_risk_'+s.id;
+  const current=localStorage.getItem(_drStratKey)||'';
+  const pop=document.getElementById('dr-popup');
+  const inp=document.getElementById('dr-input');
+  document.getElementById('dr-label').textContent='Daily Risk — '+s.name;
+  document.getElementById('dr-label').style.color=s.color;
+  inp.value=current;
+  // Position near the node on screen
+  const ar=marea.getBoundingClientRect();
+  const sc=worldToScreen(node.x,node.y);
+  let px=sc.x+40, py=sc.y-60;
+  if(px+210>ar.width) px=sc.x-220;
+  if(py<8) py=8;
+  pop.style.left=px+'px'; pop.style.top=py+'px';
+  pop.style.display='block';
+  inp.focus(); inp.select();
+  mpopup.classList.remove('show');
+}
+function closeDrPopup(){ document.getElementById('dr-popup').style.display='none'; _drStratKey=null; }
+function saveDrPopup(){
+  const val=parseFloat(document.getElementById('dr-input').value);
+  if(!isNaN(val)&&val>0) localStorage.setItem(_drStratKey,val.toString());
+  else localStorage.removeItem(_drStratKey);
+  closeDrPopup();
+}
+(function(){
+  document.getElementById('dr-save').addEventListener('click', saveDrPopup);
+  document.getElementById('dr-clear').addEventListener('click',function(){ localStorage.removeItem(_drStratKey); closeDrPopup(); });
+  document.getElementById('dr-cancel').addEventListener('click', closeDrPopup);
+  document.getElementById('dr-input').addEventListener('keydown',function(e){ if(e.key==='Enter') saveDrPopup(); if(e.key==='Escape') closeDrPopup(); });
+})();
 
 function onMapWheel(e){
   e.preventDefault();
@@ -2254,7 +2874,7 @@ if (window.electronAPI && window.electronAPI.readJson) {
 }
 const bjToday = new Date();
 function bjToKey(d){ return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
-const todayKey = bjToKey(bjToday);
+const todayKey = getEtTradingDayKey(bjToday);
 let calYear = bjToday.getFullYear();
 let calMonth = bjToday.getMonth();
 let calFirmFilter = 'all';
@@ -2598,6 +3218,76 @@ function togglePnlScale(){
   if(btn) btn.textContent=pnlScaleExpanded?'↑ Show less':'↓ Show all 20 accounts';
 }
 
+function renderPnlMcCalendar(profile, days, rr) {
+  const wrap = document.getElementById('pnl-mc-cal-wrap');
+  const grid = document.getElementById('pnl-mc-cal-grid');
+  const stratLbl = document.getElementById('pnl-mc-cal-strat');
+  const netLbl = document.getElementById('pnl-mc-cal-net');
+  if (!wrap || !grid) return;
+
+  // Pick dominant strategy
+  const counts = { ph: parseInt(document.getElementById('ph-accts')?.value||0), sf: parseInt(document.getElementById('sf-accts')?.value||0), ak: parseInt(document.getElementById('ak-accts')?.value||0) };
+  const dominant = Object.entries(counts).sort((a,b)=>b[1]-a[1]).find(e=>e[1]>0);
+  if (!dominant) { wrap.style.display='none'; return; }
+  const stratId = dominant[0];
+  const stratNames = { ph:'Pure Hunt', sf:'Safe Flow', ak:'Akimbo' };
+  const d = PNL_DATA[stratId][profile];
+  const customR = pnlCustomRisk[stratId];
+  const risk = customR || d.risk;
+  const wr = PNL_DATA[stratId].wr;
+
+  stratLbl.textContent = stratNames[stratId];
+
+  // Simulate 4 weeks (20 trading days) day by day
+  const WEEKS = 4;
+  const tradingDays = []; // { dow:0-4, win:bool|null, pnl:number|null }
+  for (let w = 0; w < WEEKS; w++) {
+    for (let dow = 0; dow < 5; dow++) {
+      const traded = shouldTrade(stratId, dow);
+      if (!traded) { tradingDays.push({ win: null, pnl: null }); continue; }
+      const win = Math.random() < wr;
+      let pnl;
+      if (stratId === 'ph' || stratId === 'ak') {
+        const roll = Math.random();
+        const winR = roll < 0.20 ? 0.7 : roll < 0.65 ? 1.0 + Math.random() * 0.3 : 2.0;
+        pnl = win ? Math.round(risk * winR) : -risk;
+      } else {
+        pnl = win ? Math.round(risk * rr) : -risk;
+      }
+      tradingDays.push({ win, pnl });
+    }
+  }
+
+  const totalNet = tradingDays.reduce((s, d) => s + (d.pnl || 0), 0);
+
+  grid.innerHTML = tradingDays.map(d => {
+    if (d.pnl === null) {
+      return '<div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:8px 6px;min-height:52px;display:flex;align-items:center;justify-content:center"><span style="font-size:9px;font-family:var(--font-m);color:var(--muted)">—</span></div>';
+    }
+    const col = d.win ? 'var(--green)' : 'var(--red)';
+    const bg = d.win ? 'rgba(0,214,143,0.07)' : 'rgba(255,61,90,0.07)';
+    const border = d.win ? 'rgba(0,214,143,0.2)' : 'rgba(255,61,90,0.2)';
+    const sign = d.pnl >= 0 ? '+' : '';
+    return '<div style="background:'+bg+';border:1px solid '+border+';border-radius:8px;padding:8px 6px;min-height:52px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px">'+
+      '<span style="font-size:9px;font-family:var(--font-m);color:'+col+';font-weight:600">'+sign+'$'+Math.abs(d.pnl).toLocaleString()+'</span>'+
+      '<span style="font-size:8px;font-family:var(--font-m);color:var(--muted)">'+(d.win?'win':'loss')+'</span>'+
+      '</div>';
+  }).join('');
+
+  if (netLbl) {
+    netLbl.textContent = (totalNet >= 0 ? '+$' : '-$') + Math.abs(totalNet).toLocaleString();
+    netLbl.style.color = totalNet >= 0 ? 'var(--green)' : 'var(--red)';
+  }
+  wrap.style.display = 'block';
+}
+
+function rerunPnlMcCal(){
+  const profile=document.getElementById('pnl-profile')?.value||'moderate';
+  const rrRaw=document.getElementById('pnl-rr')?parseInt(document.getElementById('pnl-rr').value):20;
+  const days=document.getElementById('pnl-days')?parseInt(document.getElementById('pnl-days').value):19;
+  renderPnlMcCalendar(profile, days, rrRaw/10);
+}
+
 function calcPnl(){
   const profile=document.getElementById('pnl-profile')?.value||'moderate';
   const isM1=document.getElementById('pnl-month')?.value==='1';
@@ -2615,7 +3305,7 @@ function calcPnl(){
   if(document.getElementById('pnl-rr-out')) document.getElementById('pnl-rr-out').textContent=rr.toFixed(1);
 
   const strats=[{id:'ph'},{id:'sf'},{id:'ak'}];
-  let totalAccts=0,totalGross=0,totalKeep=0;
+  let totalAccts=0,totalGross=0,totalKeep=0,totalLossDollars=0,totalWinDollars=0;
   const stratKeep={};
 
   strats.forEach(s=>{
@@ -2629,15 +3319,15 @@ function calcPnl(){
     // Days-based calculation
     const wins=Math.round(days*wr);
     const losses=days-wins;
-    // Pure Hunt uses randomized R per win (partial exit mechanic)
+    // Pure Hunt + Akimbo use randomized partial exit logic
     var monthlyPerAcct;
-    if(s.id==='ph'){
+    if(s.id==='ph'||s.id==='ak'){
       // Weighted random R distribution: 0.7R=20%, 1.0-1.3R=45%, 2.0R=35%
       var totalWinR=0;
       for(var wi=0;wi<wins;wi++){
         var roll=Math.random();
         if(roll<0.20) totalWinR+=0.7;
-        else if(roll<0.65) totalWinR+=(1.0+Math.random()*0.3); // 1.0–1.3R
+        else if(roll<0.65) totalWinR+=(1.0+Math.random()*0.3);
         else totalWinR+=2.0;
       }
       var avgWinR=wins>0?totalWinR/wins:0;
@@ -2649,11 +3339,15 @@ function calcPnl(){
     const afterSplit=gross*0.5;
     const keep=afterSplit*0.9;
     const annual=monthlyPerAcct*12;
+    const lossExposurePerAcct=losses*risk;
+    const winGrossPerAcct=monthlyPerAcct+lossExposurePerAcct;
 
     stratKeep[s.id]=keep;
     totalAccts+=accts;
     totalGross+=gross;
     totalKeep+=keep;
+    totalLossDollars+=lossExposurePerAcct*accts;
+    totalWinDollars+=winGrossPerAcct*accts;
 
     if(document.getElementById(s.id+'-wins')) document.getElementById(s.id+'-wins').textContent=wins;
     if(document.getElementById(s.id+'-losses')) document.getElementById(s.id+'-losses').textContent=losses;
@@ -2698,6 +3392,25 @@ function calcPnl(){
   sv('pnl-ph-breakdown',stratKeep.ph>0?fmt(stratKeep.ph)+' ('+pct(stratKeep.ph)+')':'0 accounts');
   sv('pnl-sf-breakdown',stratKeep.sf>0?fmt(stratKeep.sf)+' ('+pct(stratKeep.sf)+')':'0 accounts');
   sv('pnl-ak-breakdown',stratKeep.ak>0?fmt(stratKeep.ak)+' ('+pct(stratKeep.ak)+')':'0 accounts');
+
+  // Per account estimate
+  if(totalAccts>0){
+    const netPerAcct=net/totalAccts;
+    const winPerAcct=totalWinDollars/totalAccts;
+    const lossPerAcct=totalLossDollars/totalAccts;
+    const keepPerAcct=youKeep/totalAccts;
+    sv('pnl-per-acct-wins','+$'+Math.round(winPerAcct).toLocaleString(),'var(--green)');
+    sv('pnl-per-acct-losses','-$'+Math.round(lossPerAcct).toLocaleString(),'var(--red)');
+    sv('pnl-per-acct-keep','+$'+Math.round(keepPerAcct).toLocaleString(),'var(--green)');
+    const netEl=document.getElementById('pnl-per-acct-net');
+    if(netEl){netEl.textContent=(netPerAcct>=0?'+$':'-$')+Math.abs(Math.round(netPerAcct)).toLocaleString();netEl.style.color=netPerAcct>=0?'var(--green)':'var(--red)';}
+    document.getElementById('pnl-per-acct-wrap').style.display='block';
+    // Monte Carlo calendar
+    renderPnlMcCalendar(profile, days, rr);
+  } else {
+    document.getElementById('pnl-per-acct-wrap').style.display='none';
+    document.getElementById('pnl-mc-cal-wrap').style.display='none';
+  }
 
   const avgPerAcct=totalAccts>0?totalGross/totalAccts:0;
   const scaleSub=document.getElementById('pnl-scale-sub');
@@ -2746,25 +3459,25 @@ const RISK_STRATS = {
   },
   sf: {
     name: 'Safe Flow',
-    desc: 'Safe Flow · Conservative+DORB · $50k account · $2,000 trailing DD\nWR: 68.4% · Win: 2.0R · Loss: -1R · Target: +$3,000\nFires: Tue+Thu (~2 trades/week)',
+    desc: 'Safe Flow · Conservative+DORB · $50k account · $2,000 trailing DD\nWR: 68.4% · Win: 2.0R · Loss: -1R · Target: +$3,000\nFires: Tue+Thu (~2–3 trades/month)',
     wr: 0.684,
     rr: 2.0,
-    wcDD_per_R: 3027/800,  // from PDF: WC DD $3,027 at $800 risk = 3.78R
+    wcDD_per_R: 3027/800,
     target: 3000,
     trailDD: 2000,
-    tradeFreq: 2,   // Tue+Thu = 2 trades/week
+    tradeFreq: 0.6,  // ~2-3 trades/month
     mlLossStreak: 4,
     wcLossStreak: 6
   },
   ak: {
     name: 'Akimbo',
-    desc: 'Akimbo · Hunter M/W/F + Conservative Tue/Thu · $50k account · $2,000 trailing DD\nWR: 68.0% · Win: 2.0R · Loss: -1R · Target: +$3,000\nFires: Every trading day (~5 trades/week)',
+    desc: 'Akimbo · Hunter M/W/F + Conservative Tue/Thu · $50k account · $2,000 trailing DD\nWR: 68.0% · Partial exit: 0.7R–2.0R randomized · Loss: -1R · Target: +$3,000\nFires: ~2–3 trades/week',
     wr: 0.680,
-    rr: 2.0,
-    wcDD_per_R: 3625/800,  // from PDF: WC DD $3,625 at $800 risk = 4.53R
+    rr: null,        // uses Pure Hunt randomized partial exit logic
+    wcDD_per_R: 3625/800,
     target: 3000,
     trailDD: 2000,
-    tradeFreq: 5,
+    tradeFreq: 2.75,
     mlLossStreak: 4,
     wcLossStreak: 6
   }
@@ -2847,7 +3560,8 @@ function updateRiskOptions() {
 }
 
 function getWinR(strat) {
-  if (strat === 'ph') {
+  if (strat === 'ph' || strat === 'ak') {
+    // Pure Hunt partial exit logic: 20% take 0.7R, 45% take 1.0-1.3R, 35% take 2.0R
     var roll = Math.random();
     if (roll < 0.20) return 0.7;
     if (roll < 0.65) return 1.0 + Math.random() * 0.3;
@@ -2865,14 +3579,14 @@ function shouldTrade(strat, dow) {
     return Math.random() < 0.75;
   }
   if (strat === 'sf') {
-    // Fires Tue/Thu only — 50% chance each (usually 1/week, sometimes 2)
+    // Fires Tue/Thu only — 30% chance each (~2-3 trades/month)
     var eligible = [1, 3];
     if (eligible.indexOf(dow) === -1) return false;
-    return Math.random() < 0.50;
+    return Math.random() < 0.30;
   }
   if (strat === 'ak') {
-    // Full coverage Mon-Fri — 80% chance each day (min 3, up to 5/week)
-    return Math.random() < 0.80;
+    // Mon-Fri — 55% chance each day (~2-3 trades/week)
+    return Math.random() < 0.55;
   }
   return Math.random() < 0.75;
 }
@@ -2903,13 +3617,13 @@ function simulateEval(risk, wr, target, trailDD, n, tradeFreq, strat) {
       var pnl = win ? Math.round(risk * winR) : -risk;
       balance += pnl;
       if (balance > peak) peak = balance;
-      var dd = peak - balance;
       tradeLog.push({ type: win ? 'win' : 'loss', dow: dow, pnl: pnl });
       if (balance >= target) { passed = true; break; }
-      if (dd >= trailDD) { breached = true; break; }
+      var floor = peak >= trailDD ? 0 : peak - trailDD;
+      if (balance <= floor) { breached = true; break; }
     }
     if (i === n - 1) lastTradeLog = tradeLog;
-    results.push({ passed: passed, breached: breached, days: calendarDays });
+    results.push({ passed: passed, breached: breached, days: calendarDays, tradeLog: i >= n - 80 ? tradeLog.slice() : null });
   }
   results.lastTradeLog = lastTradeLog;
   return results;
@@ -2962,17 +3676,20 @@ function runRiskSim() {
   document.getElementById('mc-b-breach-bar').style.width = (sB.breachRate*100) + '%';
 
   // Dots — show days to pass/breach for last 80 simulations
-  const renderDots = (res, containerId) => {
-    const sample = res.slice(-DOTS);
+  simDetailDataA = resA.slice(-DOTS);
+  simDetailDataB = resB.slice(-DOTS);
+  const renderDots = (sample, containerId) => {
     const el = document.getElementById(containerId);
     if (!el) return;
-    el.innerHTML = sample.map(r => {
+    const side = containerId === 'sim-dots-a' ? 'a' : 'b';
+    el.innerHTML = sample.map((r, idx) => {
       const col = r.passed ? 'var(--green)' : 'var(--red)';
-      return '<span style="color:'+col+';font-weight:600;min-width:22px;text-align:right;display:inline-block">'+r.days+'</span>';
+      const hasLog = r.tradeLog && r.tradeLog.length > 0;
+      return '<span onclick="'+(hasLog?'openSimDetail('+idx+',\''+side+'\')':'')+'" style="cursor:'+(hasLog?'pointer':'default')+';color:'+col+';font-weight:600;min-width:22px;text-align:right;display:inline-block;border-radius:3px;padding:1px 2px;transition:background .12s" onmouseover="'+(hasLog?'this.style.background=\'rgba(255,255,255,0.08)\'':'')+'" onmouseout="this.style.background=\'\'">'+r.days+'</span>';
     }).join('');
   };
-  renderDots(resA, 'sim-dots-a');
-  renderDots(resB, 'sim-dots-b');
+  renderDots(simDetailDataA, 'sim-dots-a');
+  renderDots(simDetailDataB, 'sim-dots-b');
 
   // Tradeoff
   const daysSaved = sA.avgPass !== '—' && sB.avgPass !== '—' ? sA.avgPass - sB.avgPass : 0;
@@ -3008,6 +3725,98 @@ function runRiskSim() {
 
 
 
+// ── Sim Detail Popup ──
+var simDetailDataA = [];
+var simDetailDataB = [];
+
+function buildCalendarFromLog(log) {
+  var weeks = [];
+  var week = {};
+  var prevDow = -1;
+  for (var i = 0; i < log.length; i++) {
+    var e = log[i];
+    if (prevDow !== -1 && e.dow <= prevDow) {
+      weeks.push(week);
+      week = {};
+    }
+    week[e.dow] = e;
+    prevDow = e.dow;
+  }
+  if (Object.keys(week).length) weeks.push(week);
+  return weeks;
+}
+
+function openSimDetail(idx, side) {
+  var arr = side === 'a' ? simDetailDataA : simDetailDataB;
+  var r = arr[idx];
+  if (!r || !r.tradeLog || !r.tradeLog.length) return;
+  var log = r.tradeLog;
+  var simNum = idx + 1;
+  var outcome = r.passed ? 'PASSED' : 'BREACHED';
+  var outcomeCol = r.passed ? 'var(--green)' : 'var(--red)';
+
+  var wins = 0, losses = 0, netPnl = 0;
+  log.forEach(function(t) {
+    if (t.type === 'win') { wins++; netPnl += t.pnl || 0; }
+    else if (t.type === 'loss') { losses++; netPnl += t.pnl || 0; }
+  });
+  var totalTrades = wins + losses;
+  var wr = totalTrades ? Math.round(wins / totalTrades * 100) : 0;
+
+  var weeks = buildCalendarFromLog(log);
+  var dowLabels = ['MON','TUE','WED','THU','FRI'];
+  var calHTML = '<div style="display:grid;grid-template-columns:repeat(5,1fr);gap:4px;margin-bottom:8px">';
+  dowLabels.forEach(function(l) {
+    calHTML += '<div style="font-size:9px;font-family:var(--font-m);color:var(--muted);text-align:center;letter-spacing:1px">'+l+'</div>';
+  });
+  calHTML += '</div>';
+  calHTML += '<div style="display:flex;flex-direction:column;gap:4px">';
+  weeks.forEach(function(wk) {
+    calHTML += '<div style="display:grid;grid-template-columns:repeat(5,1fr);gap:4px">';
+    for (var d = 0; d < 5; d++) {
+      var e = wk[d];
+      if (!e) {
+        calHTML += '<div style="height:36px;border-radius:6px;background:var(--bg3);opacity:0.3"></div>';
+      } else if (e.type === 'skip') {
+        calHTML += '<div style="height:36px;border-radius:6px;background:var(--bg3);display:flex;align-items:center;justify-content:center"><span style="font-size:10px;color:var(--muted);font-family:var(--font-m)">—</span></div>';
+      } else {
+        var isWin = e.type === 'win';
+        var bg = isWin ? 'rgba(74,222,128,0.12)' : 'rgba(239,68,68,0.12)';
+        var col = isWin ? 'var(--green)' : 'var(--red)';
+        var lbl = (isWin ? '+' : '') + (e.pnl !== undefined ? '$'+Math.abs(e.pnl) : (isWin?'W':'L'));
+        calHTML += '<div style="height:36px;border-radius:6px;background:'+bg+';border:1px solid '+col+'33;display:flex;align-items:center;justify-content:center"><span style="font-size:10px;font-weight:600;color:'+col+';font-family:var(--font-m)">'+lbl+'</span></div>';
+      }
+    }
+    calHTML += '</div>';
+  });
+  calHTML += '</div>';
+
+  var pnlCol = netPnl >= 0 ? 'var(--green)' : 'var(--red)';
+  var html = '<div style="padding:22px 26px 18px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center">'+
+    '<div><div style="font-size:15px;font-weight:700;color:var(--text)">Simulation #'+simNum+'</div>'+
+    '<div style="font-size:12px;font-family:var(--font-m);margin-top:3px"><span style="color:'+outcomeCol+';font-weight:600">'+outcome+'</span><span style="color:var(--muted)"> in '+r.days+' calendar days</span></div></div>'+
+    '<button onclick="closeSimDetail()" style="background:none;border:none;color:var(--muted2);font-size:18px;cursor:pointer;padding:4px">✕</button></div>'+
+    '<div style="padding:18px 26px;overflow-y:auto;flex:1">'+
+    '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px">'+
+    '<div style="background:var(--bg3);border-radius:10px;padding:12px;text-align:center"><div style="font-size:15px;font-weight:700;color:var(--green)">'+wins+'</div><div style="font-size:10px;font-family:var(--font-m);color:var(--muted);margin-top:3px;letter-spacing:.5px">WINS</div></div>'+
+    '<div style="background:var(--bg3);border-radius:10px;padding:12px;text-align:center"><div style="font-size:15px;font-weight:700;color:var(--red)">'+losses+'</div><div style="font-size:10px;font-family:var(--font-m);color:var(--muted);margin-top:3px;letter-spacing:.5px">LOSSES</div></div>'+
+    '<div style="background:var(--bg3);border-radius:10px;padding:12px;text-align:center"><div style="font-size:15px;font-weight:700;color:var(--text)">'+wr+'%</div><div style="font-size:10px;font-family:var(--font-m);color:var(--muted);margin-top:3px;letter-spacing:.5px">WIN RATE</div></div>'+
+    '<div style="background:var(--bg3);border-radius:10px;padding:12px;text-align:center"><div style="font-size:15px;font-weight:700;color:'+pnlCol+'">'+(netPnl>=0?'+':'')+netPnl+'</div><div style="font-size:10px;font-family:var(--font-m);color:var(--muted);margin-top:3px;letter-spacing:.5px">NET P&L</div></div>'+
+    '</div>'+
+    '<div style="font-size:10px;font-family:var(--font-m);color:var(--muted);letter-spacing:1px;margin-bottom:10px">TRADE CALENDAR</div>'+
+    calHTML+
+    '</div>';
+
+  var overlay = document.getElementById('sim-detail-overlay');
+  var box = document.getElementById('sim-detail-box');
+  box.innerHTML = html;
+  overlay.classList.add('show');
+}
+
+function closeSimDetail() {
+  document.getElementById('sim-detail-overlay').classList.remove('show');
+}
+
 // ── P&L Simulator custom risk overrides ──
 const pnlCustomRisk = { ph: null, sf: null, ak: null };
 
@@ -3041,6 +3850,11 @@ function confirmPnlRisk(sid) {
 // ── Account Config Modal ──
 let _currentModalCard = null;
 
+function updateModalTypeFields(type) {
+  const conField = document.getElementById('acct-modal-consistency-field');
+  if (conField) conField.style.display = type === 'direct' ? '' : 'none';
+}
+
 function openAcctModal(card) {
   _currentModalCard = card;
   const name = card.dataset.acctName || 'Account';
@@ -3051,6 +3865,10 @@ function openAcctModal(card) {
   document.getElementById('acct-modal-sub').textContent = savedKey ? '#' + savedKey.replace('acct_cfg_','').substring(0,8) : '—';
   document.getElementById('acct-modal-type').value = cfg.type || 'eval';
   document.getElementById('acct-modal-strat').value = cfg.strat || '';
+  document.getElementById('acct-modal-mll-locked').checked = cfg.mllLocked || false;
+  document.getElementById('acct-modal-consistency').value = cfg.consistencyThreshold || 20;
+  document.getElementById('acct-modal-peak').value = '';
+  updateModalTypeFields(cfg.type || 'eval');
 
   document.getElementById('acct-modal-overlay').classList.add('show');
 }
@@ -3068,23 +3886,36 @@ function saveAcctConfig() {
   if (!_currentModalCard) return;
   const type = document.getElementById('acct-modal-type').value;
   const strat = document.getElementById('acct-modal-strat').value;
+  const mllLocked = document.getElementById('acct-modal-mll-locked').checked;
+  const consistencyThreshold = type === 'direct' ? (parseInt(document.getElementById('acct-modal-consistency').value) || 20) : undefined;
+  const peakOverride = parseFloat(document.getElementById('acct-modal-peak').value);
   const savedKey = _currentModalCard.dataset.acctKey;
+  const acctId = savedKey.replace('acct_cfg_', '');
 
   // Save to disk
-  acctCfg[savedKey] = { type, strat };
+  acctCfg[savedKey] = { type, strat, mllLocked, ...(consistencyThreshold !== undefined ? { consistencyThreshold } : {}) };
   saveAcctCfg();
 
+  // Send peak balance correction to server if provided
+  if (!isNaN(peakOverride) && peakOverride > 0) {
+    fetch('http://localhost:3001/set-peak', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ accountKey: acctId, peakBal: peakOverride })
+    }).catch(() => {});
+  }
+
   // Update card classes
-  _currentModalCard.classList.remove('type-funded','type-eval','funded');
+  _currentModalCard.classList.remove('type-funded','type-eval','type-direct','funded');
   if (type === 'funded') _currentModalCard.classList.add('type-funded');
+  else if (type === 'direct') _currentModalCard.classList.add('type-direct');
   else _currentModalCard.classList.add('type-eval');
   if (strat) _currentModalCard.dataset.strat = strat;
 
   // Update card tag text if possible
   const tag = _currentModalCard.querySelector('.c-tag');
   if (tag) {
-    tag.textContent = type === 'funded' ? 'Funded' : 'Eval';
-    tag.className = 'c-tag ' + (type === 'funded' ? 'tg' : 'ta');
+    tag.textContent = type === 'funded' ? 'Funded' : type === 'direct' ? 'Direct' : 'Eval';
+    tag.className = 'c-tag ' + (type === 'funded' ? 'tg' : type === 'direct' ? 'td' : 'ta');
   }
 
   // Update strategy in footer
@@ -3150,6 +3981,12 @@ function openSettings(){
   const cfg = JSON.parse(localStorage.getItem('propdesk_cfg')||'{}');
   document.getElementById('pref-name').value = cfg.dashName||'PropDesk';
   buildThemeGrid();
+  if(window.electronAPI && window.electronAPI.getVersion){
+    window.electronAPI.getVersion().then(v => {
+      const el = document.getElementById('sm-version');
+      if(el) el.textContent = 'v' + v;
+    });
+  }
   fetch('http://localhost:3001/status')
     .then(r=>r.json())
     .then(data=>{
@@ -3291,7 +4128,7 @@ function renderPayouts(){
       if(!c||c.empty){html+='<div class="cal-cell" style="opacity:0.1"></div>';return;}
       const k = c.date.getFullYear()+'-'+String(c.date.getMonth()+1).padStart(2,'0')+'-'+String(c.date.getDate()).padStart(2,'0');
       const pos = dayMap[k];
-      const isTod = k === bjToKey(new Date());
+      const isTod = k === getEtTradingDayKey(new Date());
       const hasPayout = pos && pos.length > 0 && c.cur;
       const cls = ['cal-cell', !c.cur?'other-month':'', isTod?'is-today':'', hasPayout?'day-green':''].filter(Boolean).join(' ');
       let inner = '<div class="cal-day-num">'+c.date.getDate()+(isTod?'<span class="cal-today-dot"></span>':'')+'</div>';
@@ -3449,12 +4286,8 @@ function closeLightbox(){
 
 // Add payout modal
 function openAddPayout(){
-  // Set today's date
-  const today = new Date();
-  const yyyy = today.getFullYear();
-  const mm = String(today.getMonth()+1).padStart(2,'0');
-  const dd = String(today.getDate()).padStart(2,'0');
-  document.getElementById('apo-date').value = yyyy+'-'+mm+'-'+dd;
+  // Set today's ET trading date (6 PM ET cutoff)
+  document.getElementById('apo-date').value = getEtTradingDayKey(new Date());
   document.getElementById('apo-amount').value = '';
   clearApoCert();
 
@@ -3590,6 +4423,29 @@ function saveNewPayout(){
   apoCertData = null;
   savePOs();
 
+  // Reset the green-day counter for this account so it starts fresh after payout
+  localStorage.setItem('payout_reset_' + (account || firm), date);
+
+  // Tell the server to reset balance baselines (firstBal, peakBal) on next sync
+  // so the post-payout balance drop isn't treated as a trading loss
+  const liveAcct = liveAccounts.find(a => a.name === account);
+  const acctKey = liveAcct ? (liveAcct.id || liveAcct.name) : (account || firm);
+
+  // Clear any manual green-day override so counter starts clean at 0
+  localStorage.removeItem('green_manual_acct_cfg_' + acctKey);
+
+  // Auto-lock MLL at starting balance for this account post-payout
+  const cfgKey = 'acct_cfg_' + acctKey;
+  if (!acctCfg[cfgKey]) acctCfg[cfgKey] = {};
+  acctCfg[cfgKey].mllLocked = true;
+  saveAcctCfg();
+
+  fetch('http://localhost:3001/payout', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ accountKey: acctKey })
+  }).catch(function(){});
+
   // Jump to the month of the new payout
   const d = new Date(date+'T12:00:00');
   poYear = d.getFullYear();
@@ -3616,9 +4472,32 @@ function setPoView(v, btn){
 function renderCertGrid(allFiltered){
   const grid = document.getElementById('po-cards-grid');
   if(!grid) return;
+
+  // Controls bar — always shown at top
+  const bar = document.createElement('div');
+  bar.style.cssText = 'display:flex;align-items:center;gap:8px;padding:0 0 16px 0;flex-shrink:0';
+  const calBtn = document.createElement('button');
+  calBtn.className = 'mv'; calBtn.style.cssText = 'font-size:11px;padding:5px 11px';
+  calBtn.innerHTML = '<i class="ti ti-calendar"></i> Calendar';
+  calBtn.onclick = function(){ setPoView('calendar', calBtn); };
+  const gridBtn = document.createElement('button');
+  gridBtn.className = 'mv on'; gridBtn.style.cssText = 'font-size:11px;padding:5px 11px';
+  gridBtn.innerHTML = '<i class="ti ti-layout-grid"></i> Grid';
+  gridBtn.onclick = function(){ setPoView('grid', gridBtn); };
+  const toggle = document.createElement('div'); toggle.className = 'po-view-toggle';
+  toggle.appendChild(calBtn); toggle.appendChild(gridBtn);
+  const addBtn = document.createElement('button');
+  addBtn.className = 'sm-btn save'; addBtn.textContent = '+ Add Payout';
+  addBtn.style.cssText = 'padding:5px 12px;font-size:11px;margin-left:auto';
+  addBtn.onclick = openAddPayout;
+  bar.appendChild(toggle); bar.appendChild(addBtn);
+
+  grid.innerHTML = '';
+  grid.appendChild(bar);
+
   const sorted = [...allFiltered].sort((a,b) => new Date(b.date) - new Date(a.date));
   if(!sorted.length){
-    grid.innerHTML = '<div class="po-empty"><i class="ti ti-certificate"></i><div class="po-empty-lbl">No payouts yet</div><div class="po-empty-sub">Click "+ Add Payout" to log one</div></div>';
+    grid.insertAdjacentHTML('beforeend', '<div class="po-empty"><i class="ti ti-certificate"></i><div class="po-empty-lbl">No payouts yet</div><div class="po-empty-sub">Click "+ Add Payout" to log one</div></div>');
     return;
   }
   const wrap = document.createElement('div');
@@ -3677,36 +4556,7 @@ function renderCertGrid(allFiltered){
     if(!p.cert) card.onclick = function(e){ if(e.target === card || e.target.closest('.cert-thumb')) triggerGridCertUpload(p.id); };
     wrap.appendChild(card);
   });
-  grid.innerHTML = '';
   grid.appendChild(wrap);
-
-  // Footer with nav buttons
-  const footer = document.createElement('div');
-  footer.className = 'cal-month-total';
-  const calBtn = document.createElement('button');
-  calBtn.className = 'mv'; calBtn.style.cssText = 'font-size:11px;padding:5px 11px';
-  calBtn.innerHTML = '<i class="ti ti-calendar"></i> Calendar';
-  calBtn.onclick = function(){ setPoView('calendar', calBtn); };
-  const gridBtn = document.createElement('button');
-  gridBtn.className = 'mv on'; gridBtn.style.cssText = 'font-size:11px;padding:5px 11px';
-  gridBtn.innerHTML = '<i class="ti ti-layout-grid"></i> Grid';
-  gridBtn.onclick = function(){ setPoView('grid', gridBtn); };
-  const toggle = document.createElement('div'); toggle.className = 'po-view-toggle';
-  toggle.appendChild(calBtn); toggle.appendChild(gridBtn);
-  const clearBtn = document.createElement('button');
-  clearBtn.className = 'sm-btn cancel'; clearBtn.textContent = 'Clear All';
-  clearBtn.style.cssText = 'padding:5px 12px;font-size:11px;color:var(--red);border-color:rgba(255,61,90,.3)';
-  clearBtn.onclick = clearPayouts;
-  const addBtn = document.createElement('button');
-  addBtn.className = 'sm-btn save'; addBtn.textContent = '+ Add Payout';
-  addBtn.style.cssText = 'padding:5px 12px;font-size:11px';
-  addBtn.onclick = openAddPayout;
-  const btnGroup = document.createElement('div');
-  btnGroup.style.cssText = 'display:flex;align-items:center;gap:8px';
-  btnGroup.appendChild(toggle); btnGroup.appendChild(clearBtn); btnGroup.appendChild(addBtn);
-  footer.innerHTML = '<span class="label">Grid view · '+allFiltered.length+' payouts</span>';
-  footer.appendChild(btnGroup);
-  grid.appendChild(footer);
 }
 function triggerGridCertUpload(id){
   document.getElementById('gcert-'+id)?.click();
@@ -3957,26 +4807,57 @@ function renderFcRoi(){
 }
 
 
-const FIRM_LOGOS={LUCID:'https://www.google.com/s2/favicons?domain=lucidtrading.com&sz=32',TOPSTEP:'https://www.google.com/s2/favicons?domain=topstep.com&sz=32',TRADEIFY:'https://www.google.com/s2/favicons?domain=tradeify.co&sz=32',APEX:'https://www.google.com/s2/favicons?domain=apextraderfunding.com&sz=32',MFF:'https://www.google.com/s2/favicons?domain=myfundedfutures.com&sz=32',ALPHA:'https://www.google.com/s2/favicons?domain=alphacapitalgroup.uk&sz=32'};
+const FIRM_LOGOS={LUCID:'https://www.google.com/s2/favicons?domain=lucidtrading.com&sz=32',TOPSTEP:'https://www.google.com/s2/favicons?domain=topstep.com&sz=32',TRADEIFY:'https://www.google.com/s2/favicons?domain=tradeify.co&sz=32',APEX:'https://www.google.com/s2/favicons?domain=apextraderfunding.com&sz=32',MFF:'https://www.google.com/s2/favicons?domain=myfundedfutures.com&sz=32',ALPHA:'https://www.google.com/s2/favicons?domain=alphacapitalgroup.uk&sz=32',FUNDEDNEXT:'https://www.google.com/s2/favicons?domain=fundednext.com&sz=32',BULENOX:'https://www.google.com/s2/favicons?domain=bulenox.com&sz=32'};
 
 function fmtPnl(v){if(v===null||v===undefined)return'—';return(v>=0?'+$':'-$')+Math.abs(v).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});}
 function pnlColor(v){return v===null?'var(--muted)':v>=0?'var(--green)':'var(--red)';}
 
-function getGreenDays(acctName,firm){
+function getGreenDayThreshold(firm, acctSize){
+  const f = (firm||'').toUpperCase();
+  if(f==='LUCID'){
+    if(acctSize>=150000) return 250;
+    if(acctSize>=100000) return 200;
+    return 150; // 50K default
+  }
+  return 150; // Topstep and all others
+}
+
+function getGreenDays(acctName,firm,acctSize){
   const lastReset=localStorage.getItem('payout_reset_'+(acctName||firm))||'2000-01-01';
-  return(typeof bjTrades!=='undefined'?bjTrades:[]).filter(t=>t.date>lastReset&&(t.acctName===acctName||(!t.acctName&&(t.firm||'').toUpperCase()===(firm||'').toUpperCase()))&&t.pnl>=150);
+  const threshold=getGreenDayThreshold(firm,acctSize||50000);
+  return(typeof bjTrades!=='undefined'?bjTrades:[]).filter(t=>t.date>lastReset&&(t.acctName===acctName||(!t.acctName&&(t.firm||'').toUpperCase()===(firm||'').toUpperCase()))&&t.pnl>=threshold);
+}
+
+function getGreenCount(acctKey, acctName, firm, acctSize){
+  const natural = getGreenDays(acctName, firm, acctSize).length;
+  const manualStr = localStorage.getItem('green_manual_' + acctKey);
+  if(manualStr){ const gm=JSON.parse(manualStr); return Math.min(5, Math.max(0, gm.base + (natural - gm.snap))); }
+  return Math.min(natural, 5);
+}
+
+function setGreenManual(acctKey, acctName, n, naturalCount){
+  localStorage.setItem('green_manual_'+acctKey, JSON.stringify({base:n, snap:naturalCount}));
+  if(liveAccounts&&liveAccounts.length) renderLiveAccounts({accounts:liveAccounts,synced_at:null,count:liveAccounts.length});
 }
 
 function autoLogPnlEvents(pnlEvents){
   if(!pnlEvents||!pnlEvents.length)return;
-  let added=0;
+  let changed=0;
   pnlEvents.forEach(e=>{
     const isDupe=bjTrades.some(t=>t.date===e.date&&t.firm===e.firm&&t.pnl===e.pnl&&t.acctName===e.acctName);
     if(isDupe)return;
-    bjTrades.push({date:e.date,time:e.time,inst:'BOT',pnl:e.pnl,firm:e.firm,acctName:e.acctName,notes:e.acctName+' '+(e.pnl>=0?'+':'')+e.pnl.toFixed(2)});
-    added++;
+    // Merge into existing same-day same-account entry if one exists
+    const existing=bjTrades.find(t=>t.date===e.date&&t.firm===e.firm&&t.acctName===e.acctName);
+    if(existing){
+      existing.pnl=Math.round((existing.pnl+e.pnl)*100)/100;
+      existing.time=e.time;
+      existing.notes=existing.acctName+' '+(existing.pnl>=0?'+':'')+existing.pnl.toFixed(2);
+    } else {
+      bjTrades.push({date:e.date,time:e.time,inst:'BOT',pnl:e.pnl,firm:e.firm,acctName:e.acctName,notes:e.acctName+' '+(e.pnl>=0?'+':'')+e.pnl.toFixed(2)});
+    }
+    changed++;
   });
-  if(added>0){
+  if(changed>0){
     saveBjTrades();
     if(document.getElementById('page-journal')&&document.getElementById('page-journal').classList.contains('on'))renderCalendar();
   }
@@ -3989,7 +4870,8 @@ function renderNearPayout(accounts){
   var statSub=document.getElementById('stat-near-payout-sub');
   if(!grid)return;
   var funded=accounts.filter(function(a){var cfg=acctCfg['acct_cfg_'+(a.id||a.name)]||{};return cfg.type==='funded';});
-  if(!funded.length){
+  var direct=accounts.filter(function(a){var cfg=acctCfg['acct_cfg_'+(a.id||a.name)]||{};return cfg.type==='direct';});
+  if(!funded.length&&!direct.length){
     grid.innerHTML='<div style="color:var(--muted);font-size:12px;font-family:var(--font-m);padding:20px 0">No funded accounts yet</div>';
     if(badge)badge.textContent='0';
     if(statEl)statEl.textContent='---';
@@ -3997,8 +4879,48 @@ function renderNearPayout(accounts){
   }
   grid.innerHTML='';
   var ec=0;
-  funded.sort(function(a,b){return getGreenDays(b.name,b.firm).length-getGreenDays(a.name,a.firm).length;}).forEach(function(a){
-    var cnt=Math.min(getGreenDays(a.name,a.firm).length,5);
+  // Direct funded accounts — show consistency rule status
+  direct.forEach(function(a){
+    var cfg=acctCfg['acct_cfg_'+(a.id||a.name)]||{};
+    var conThreshold=cfg.consistencyThreshold||20;
+    var acctTrades=(typeof bjTrades!=='undefined'?bjTrades:[]).filter(function(t){return t.acctName===a.name;});
+    var cycleProfit=a.allTimePnl||0;
+    var bestDay=acctTrades.filter(function(t){return t.pnl>0;}).reduce(function(best,t){return Math.max(best,t.pnl);},0);
+    var profitTarget=a.profitTarget||Math.round((a.acctSize||50000)*0.06);
+    var targetMet=cycleProfit>=profitTarget;
+    var conPct=cycleProfit>0?Math.round((bestDay/cycleProfit)*100):0;
+    var conMet=cycleProfit>0&&conPct<=conThreshold;
+    var eligible=targetMet&&conMet;
+    var logo=FIRM_LOGOS[a.firm]||'';
+    var card=document.createElement('div');
+    var borderCol=eligible?'rgba(99,179,237,.3)':targetMet?'rgba(240,165,0,.15)':'var(--border)';
+    var bgCol=eligible?'rgba(99,179,236,.04)':targetMet?'rgba(240,165,0,.02)':'var(--bg2)';
+    card.style.cssText='background:'+bgCol+';border:1px solid '+borderCol+';border-radius:12px;padding:14px 16px;display:flex;align-items:center;gap:14px';
+    var logoHtml=logo?('<img src="'+logo+'" style="width:32px;height:32px;border-radius:8px;object-fit:contain;background:var(--bg4);flex-shrink:0">'):'<div style="width:32px;height:32px;border-radius:8px;background:var(--bg4);flex-shrink:0"></div>';
+    var conBarCol=conPct>conThreshold?'var(--red)':conPct>conThreshold*0.7?'var(--amber)':'var(--green)';
+    var conFill=Math.min(100,cycleProfit>0?Math.round((conPct/conThreshold)*100):0);
+    var targetFill=Math.min(100,Math.max(0,Math.round((cycleProfit/profitTarget)*100)));
+    var targetBarCol=targetMet?'var(--green)':'#63b3ed';
+    var barHtml=
+      '<div style="margin-top:6px">'+
+        '<div style="display:flex;align-items:center;gap:6px;margin-bottom:3px">'+
+          '<div style="flex:1;height:4px;background:var(--bg4);border-radius:2px;overflow:hidden"><div style="height:100%;width:'+targetFill+'%;background:'+targetBarCol+';border-radius:2px"></div></div>'+
+          '<span style="font-size:9px;font-family:var(--font-m);color:'+targetBarCol+';min-width:40px;text-align:right">'+(cycleProfit>=0?'+$':'-$')+Math.abs(cycleProfit).toLocaleString()+' / $'+profitTarget.toLocaleString()+'</span>'+
+        '</div>'+
+        '<div style="display:flex;align-items:center;gap:6px">'+
+          '<div style="flex:1;height:4px;background:var(--bg4);border-radius:2px;overflow:hidden"><div style="height:100%;width:'+conFill+'%;background:'+conBarCol+';border-radius:2px"></div></div>'+
+          '<span style="font-size:9px;font-family:var(--font-m);color:'+conBarCol+';min-width:40px;text-align:right">'+(cycleProfit>0?conPct+'% / '+conThreshold+'%':'—')+'</span>'+
+        '</div>'+
+      '</div>';
+    var statusHtml=eligible
+      ?'<button data-firm="'+a.firm+'" data-name="'+a.name+'" class="np-payout-btn" style="background:#63b3ed;color:#000;border:none;border-radius:8px;padding:7px 14px;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap;flex-shrink:0">Log Payout</button>'
+      :'<div style="font-size:10px;font-family:var(--font-m);color:var(--muted);white-space:nowrap;flex-shrink:0">'+(!targetMet?'$'+(profitTarget-Math.max(0,cycleProfit)).toLocaleString()+' to go':'Consistency '+conThreshold+'% max')+'</div>';
+    card.innerHTML=logoHtml+'<div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:600;margin-bottom:1px">'+a.name+'</div><div style="font-size:10px;font-family:var(--font-m);color:var(--muted)">'+a.firm+' · Direct Funded · Target: +$'+profitTarget.toLocaleString()+'</div>'+barHtml+'</div>'+statusHtml;
+    grid.appendChild(card);
+  });
+  // Funded accounts — show green day pips
+  funded.sort(function(a,b){return getGreenCount('acct_cfg_'+(b.id||b.name),b.name,b.firm,b.acctSize)-getGreenCount('acct_cfg_'+(a.id||a.name),a.name,a.firm,a.acctSize);}).forEach(function(a){
+    var cnt=getGreenCount('acct_cfg_'+(a.id||a.name),a.name,a.firm,a.acctSize);
     var el=cnt>=5;
     if(el)ec++;
     var logo=FIRM_LOGOS[a.firm]||'';
@@ -4032,9 +4954,9 @@ function renderNearPayout(accounts){
   if(badge)badge.textContent=funded.length+' account'+(funded.length!==1?'s':'');
 
   // Stat card — show best account's progress
-  var sorted2=funded.slice().sort(function(a,b){return getGreenDays(b.name,b.firm).length-getGreenDays(a.name,a.firm).length;});
+  var sorted2=funded.slice().sort(function(a,b){return getGreenCount('acct_cfg_'+(b.id||b.name),b.name,b.firm,b.acctSize)-getGreenCount('acct_cfg_'+(a.id||a.name),a.name,a.firm,a.acctSize);});
   var best=sorted2[0];
-  var bestCnt=best?Math.min(getGreenDays(best.name,best.firm).length,5):0;
+  var bestCnt=best?getGreenCount('acct_cfg_'+(best.id||best.name),best.name,best.firm,best.acctSize):0;
   var bestEl=bestCnt>=5;
   var pipsEl=document.getElementById('stat-near-pips');
   if(pipsEl){
@@ -4071,8 +4993,8 @@ function bjSetTab(tab) {
   document.getElementById('bj-pane-chart').style.display = tab==='chart' ? 'block' : 'none';
   var acctBtn = document.getElementById('bj-tab-accts');
   var chartBtn = document.getElementById('bj-tab-chart');
-  if(acctBtn){ acctBtn.style.borderBottomColor = tab==='accts'?'var(--accent)':'transparent'; acctBtn.style.color = tab==='accts'?'#fff':'rgba(255,255,255,.35)'; }
-  if(chartBtn){ chartBtn.style.borderBottomColor = tab==='chart'?'var(--accent)':'transparent'; chartBtn.style.color = tab==='chart'?'#fff':'rgba(255,255,255,.35)'; }
+  if(acctBtn){ acctBtn.style.borderBottomColor = tab==='accts'?'#00d4a0':'transparent'; acctBtn.style.color = tab==='accts'?'#fff':'rgba(255,255,255,.3)'; }
+  if(chartBtn){ chartBtn.style.borderBottomColor = tab==='chart'?'#00d4a0':'transparent'; chartBtn.style.color = tab==='chart'?'#fff':'rgba(255,255,255,.3)'; }
   if(tab==='chart') renderBjChart();
 }
 
@@ -4227,7 +5149,7 @@ renderLiveAccounts = function(data) {
   const accounts = data.accounts;
   const now = new Date();
   const monthKey = now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0');
-  const todayKey2 = now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+'-'+String(now.getDate()).padStart(2,'0');
+  const todayKey2 = getEtTradingDayKey(now);
   const todayPnl = accounts.reduce((s,a)=>s+(a.dayPnl||0),0);
   const allTimePnl = accounts.reduce((s,a)=>s+(a.allTimePnl||0),0);
   const monthTrades = (typeof bjTrades!=='undefined'?bjTrades:[]).filter(t=>t.date&&t.date.startsWith(monthKey));
@@ -4309,6 +5231,7 @@ function closeChangelog(){ document.getElementById('changelog-overlay').classLis
 if (window.electronAPI) {
   window.electronAPI.onAccountsUpdate(function(data) {
     if (!data || !data.accounts || !data.accounts.length) return;
+    lastIpcUpdateTime = Date.now();
     liveAccounts = data.accounts;
     syncStatus = 'online';
     if (data.pnlEvents && data.pnlEvents.length) autoLogPnlEvents(data.pnlEvents);
