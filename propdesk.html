@@ -1706,10 +1706,14 @@ html,body{width:100%;height:100%;overflow:hidden;background:#09090d}
       <div>
         <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
           <span style="font-size:11px;font-family:var(--font-m);padding:3px 10px;border-radius:20px;background:var(--xdim);color:#b09aff;border:1px solid rgba(124,92,252,.25)">Latest</span>
-          <span style="font-size:13px;font-weight:600;color:var(--text)">v1.4.9</span>
+          <span style="font-size:13px;font-weight:600;color:var(--text)">v1.5.0</span>
           <span style="font-size:11px;font-family:var(--font-m);color:var(--muted)">June 2026</span>
         </div>
         <div style="display:flex;flex-direction:column;gap:7px">
+          <div style="display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--muted2);font-family:var(--font-m)">
+            <i class="ti ti-circle-check" style="color:var(--green);font-size:14px;margin-top:1px;flex-shrink:0"></i>
+            <span>Today&apos;s P&amp;L now pulls from the same source as Recent Activity (bot journal trades) instead of raw balance snapshots — eliminates discrepancies caused by stale snapshots at day rollover</span>
+          </div>
           <div style="display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--muted2);font-family:var(--font-m)">
             <i class="ti ti-circle-check" style="color:var(--green);font-size:14px;margin-top:1px;flex-shrink:0"></i>
             <span>Bot journal P&amp;L now uses dayPnl (actual balance change from day start) instead of accumulated snapshot deltas — journal entries will always match the correct daily P&amp;L</span>
@@ -5159,17 +5163,17 @@ renderLiveAccounts = function(data) {
   const now = new Date();
   const monthKey = now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0');
   const todayKey2 = getEtTradingDayKey(now);
-  const todayPnl = accounts.reduce((s,a)=>s+(a.dayPnl||0),0);
   const allTimePnl = accounts.reduce((s,a)=>s+(a.allTimePnl||0),0);
   const monthTrades = (typeof bjTrades!=='undefined'?bjTrades:[]).filter(t=>t.date&&t.date.startsWith(monthKey));
   const monthPnl = monthTrades.reduce((s,t)=>s+t.pnl,0);
+  const todayTrades=(typeof bjTrades!=='undefined'?bjTrades:[]).filter(t=>t.date===todayKey2);
+  const todayPnl = todayTrades.reduce((s,t)=>s+(t.pnl||0),0);
   const el = document.getElementById('stat-total');
   if(el){el.textContent=fmtPnl(todayPnl);el.style.color=pnlColor(todayPnl);}
   const lbl = document.getElementById('stat-total-lbl');
   if(lbl)lbl.textContent="Today's P&L";
   const sub = document.getElementById('stat-total-sub');
   if(sub)sub.innerHTML='auto-detected';
-  const todayTrades=(typeof bjTrades!=='undefined'?bjTrades:[]).filter(t=>t.date===todayKey2);
   const ttEl=document.getElementById('stat-today-trades');
   if(ttEl)ttEl.textContent=todayTrades.length||'0';
   const actTable=document.querySelector('.act-table');
