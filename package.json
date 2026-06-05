@@ -1,6 +1,6 @@
 {
   "name": "propdesk",
-  "version": "1.5.1",
+  "version": "1.5.2",
   "description": "PropDesk — prop trading account dashboard",
   "main": "main.js",
   "scripts": {

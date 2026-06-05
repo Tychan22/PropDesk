@@ -1706,10 +1706,14 @@ html,body{width:100%;height:100%;overflow:hidden;background:#09090d}
       <div>
         <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
           <span style="font-size:11px;font-family:var(--font-m);padding:3px 10px;border-radius:20px;background:var(--xdim);color:#b09aff;border:1px solid rgba(124,92,252,.25)">Latest</span>
-          <span style="font-size:13px;font-weight:600;color:var(--text)">v1.5.1</span>
+          <span style="font-size:13px;font-weight:600;color:var(--text)">v1.5.2</span>
           <span style="font-size:11px;font-family:var(--font-m);color:var(--muted)">June 2026</span>
         </div>
         <div style="display:flex;flex-direction:column;gap:7px">
+          <div style="display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--muted2);font-family:var(--font-m)">
+            <i class="ti ti-circle-check" style="color:var(--green);font-size:14px;margin-top:1px;flex-shrink:0"></i>
+            <span>P&amp;L events now log based on actual day P&amp;L vs last reported value — PropDesk no longer needs to be open during a trade to catch it; opening after a trade closes will log correctly on first sync</span>
+          </div>
           <div style="display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--muted2);font-family:var(--font-m)">
             <i class="ti ti-circle-check" style="color:var(--green);font-size:14px;margin-top:1px;flex-shrink:0"></i>
             <span>Fixed MLL display showing incorrect value when locked at starting balance — now always shows $0 when MLL lock is enabled</span>

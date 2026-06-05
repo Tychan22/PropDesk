@@ -72,7 +72,7 @@ function processSnapshot(data) {
   const enriched = (data.accounts || []).map(a => {
     const key = a.id || a.name;
     let bal = parseBal(a.balance);
-    if (!history[key]) history[key] = { snapshots: [], firstBal: null, peakBal: null, dayStartBal: null, dayStartDate: null };
+    if (!history[key]) history[key] = { snapshots: [], firstBal: null, peakBal: null, dayStartBal: null, dayStartDate: null, lastReportedDayPnl: null };
     const h = history[key];
 
     // If the extension scraped a null balance (TraderPost still loading), fall back to the
@@ -131,6 +131,7 @@ function processSnapshot(data) {
       h.dayStartBal = (lastSnapBal !== null && lastSnapBal > 0) ? lastSnapBal : bal;
       // Also clear last snapshot so pnlEvents don't fire on day rollover
       if (h.snapshots.length) h.snapshots = [h.snapshots[h.snapshots.length - 1]];
+      h.lastReportedDayPnl = null; // reset so first trade of new day gets logged
     }
 
     // Auto-correct: if dayStartBal is exactly acctSize but we have prior balance history,
@@ -146,21 +147,17 @@ function processSnapshot(data) {
 
     const dayPnl = h.dayStartBal !== null && bal !== null ? Math.round((bal - h.dayStartBal) * 100) / 100 : null;
 
-    // Use last non-null snapshot for pnlEvent — null entries (failed scrapes) would swallow real balance changes
-    const lastSnap = h.snapshots.slice().reverse().find(s => parseBal(s.bal) !== null) || null;
-    if (lastSnap && bal !== null) {
-      const lastBal = parseBal(lastSnap.bal);
-      const change = bal - lastBal;
-      if (lastBal && Math.abs(change) > 1 && Math.abs(change) < acctSize * 0.5) {
-        pnlEvents.push({
-          acctKey: key, acctName: a.name, firm: a.firm || 'BOT',
-          date: todayKey,
-          time: now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true }),
-          pnl: Math.round(change * 100) / 100,
-          dayPnl,
-          prevBal: lastBal, newBal: bal
-        });
-      }
+    // Fire pnlEvent whenever dayPnl differs from what was last logged — catches trades even if
+    // PropDesk was opened after the trade closed (no snapshot delta to detect).
+    if (dayPnl !== null && !isFallbackBal && Math.abs(dayPnl) > 1 && dayPnl !== h.lastReportedDayPnl) {
+      pnlEvents.push({
+        acctKey: key, acctName: a.name, firm: a.firm || 'BOT',
+        date: todayKey,
+        time: now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true }),
+        pnl: dayPnl,
+        dayPnl,
+      });
+      h.lastReportedDayPnl = dayPnl;
     }
 
     // Only store real (non-null, non-fallback) balances — null or fallback entries skew pnlEvent detection
